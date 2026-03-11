@@ -73,3 +73,13 @@ Express detectará `frontend/dist` y lo servirá automáticamente.
 ## Rediseño UX
 - Se mejoró la presentación visual con una composición más clara (hero, servicios, metodología y cierre de valor).
 - Se conservaron y destacaron los servicios jurídicos principales de Lexiuridicus.
+
+## Nota de compilación del rediseño
+Si en producción no aparece el frontend compilado, el servidor ahora entrega un fallback visual con el mismo rediseño UX (hero, servicios, metodología y cierre), para evitar ver una versión degradada.
+
+Para forzar el uso del frontend React compilado:
+```bash
+npm run install:all
+npm run build
+npm start
+```
