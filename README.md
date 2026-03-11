@@ -98,3 +98,11 @@ npm start
 - Bloque de métricas de confianza para mejorar percepción de solvencia.
 - Sección de diferenciales basada en buenas prácticas: gobernanza, riesgo, comunicación y confidencialidad.
 - CTA de conversión directa a WhatsApp y correo para acelerar contacto comercial.
+
+
+## Verificación rápida en producción
+Si no ves los cambios de diseño:
+1. Abre `/api/health` y valida el campo `staticDir`.
+2. Si `staticDir` apunta a una ruta antigua, rebuild/redeploy del frontend o limpia ese directorio en el servidor.
+3. Si `staticDir` es `null`, estás viendo el fallback embebido del backend (ya alineado con el último rediseño).
+4. Limpia caché del navegador/CDN y recarga forzada.
