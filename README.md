@@ -11,6 +11,7 @@ Proyecto full stack con **React** (frontend) y **Node.js + Express** (backend) p
 ## Estructura
 - `frontend/`: aplicación React con Vite.
 - `backend/`: API REST con Express.
+- `package.json` (raíz): scripts de despliegue para hosting.
 
 ## Desarrollo local
 
@@ -30,17 +31,22 @@ npm run dev
 ```
 Frontend en `http://localhost:5173` con proxy de `/api` hacia el backend.
 
-## Publicación recomendada (un solo servidor Express)
-Para evitar el error **"No se puede obtener /"**, genera el build del frontend y deja que Express lo sirva:
+## Solución al error "No se puede obtener /"
+En producción, Express debe servir el frontend compilado. Este proyecto ya está preparado para eso y busca `index.html` en:
+- `FRONTEND_DIST` (si defines variable de entorno)
+- `frontend/dist`
+- `frontend/build`
+- `public`
+
+### Flujo recomendado de despliegue
+Desde la raíz del repositorio:
 
 ```bash
-cd frontend
-npm install
+npm run install:all
 npm run build
-
-cd ../backend
-npm install
-npm run start
+npm start
 ```
 
-Con esto, Express sirve `frontend/dist` y la página queda disponible desde `/`.
+Si el frontend aún no está compilado, `/` mostrará una página informativa (no el error *Cannot GET /*) y las APIs seguirán disponibles en:
+- `/api/health`
+- `/api/services`
