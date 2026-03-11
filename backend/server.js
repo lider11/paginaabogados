@@ -81,21 +81,19 @@ if (staticDir) {
           <title>Lexiuridicus | Servicios Jurídicos</title>
           <script src="https://cdn.tailwindcss.com"></script>
         </head>
-        <body class="m-0 bg-slate-50 text-slate-900">
-          <main class="mx-auto max-w-6xl px-5 py-10">
-            <section class="mb-10 rounded-2xl border border-slate-200 bg-white p-8 shadow-lg shadow-slate-900/5">
-              <p class="inline-block rounded-full bg-blue-900 px-3 py-1 text-sm font-semibold text-white">Lexiuridicus</p>
-              <h1 class="mt-3 text-4xl font-bold text-slate-800 sm:text-5xl">Servicios Jurídicos Especializados</h1>
-              <p class="mt-2 max-w-3xl text-slate-600">Impulsamos decisiones legales sólidas para empresas y familias.</p>
+        <body class="bg-slate-50 text-slate-900">
+          <main class="mx-auto max-w-6xl px-5 py-12">
+            <section class="rounded-3xl bg-gradient-to-r from-slate-900 to-blue-900 p-8 text-white">
+              <p class="inline-block rounded-full bg-white/15 px-4 py-1 text-sm">Lexiuridicus</p>
+              <h1 class="mt-4 text-4xl font-bold">Soluciones jurídicas para proteger y proyectar tu futuro</h1>
+              <p class="mt-3 text-blue-100">No encontramos archivos estáticos publicados, pero tu API está funcionando.</p>
             </section>
-
-            <section>
-              <h2 class="mb-4 text-2xl font-semibold text-slate-800">Nuestros servicios</h2>
-              <p id="status" class="text-slate-600">Cargando servicios...</p>
-              <div id="grid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"></div>
+            <section class="mt-8">
+              <h2 class="text-2xl font-semibold">Servicios</h2>
+              <p id="status" class="mt-2 text-slate-600">Cargando servicios...</p>
+              <div id="grid" class="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-4"></div>
             </section>
           </main>
-
           <script>
             const icons = {
               'Tradición de Acciones': '📄',
@@ -103,24 +101,19 @@ if (staticDir) {
               'Gobierno Corporativo': '🏛️',
               'Imagen Empresarial': '✨'
             };
-
             fetch('/api/services')
-              .then((res) => {
-                if (!res.ok) throw new Error('Error de API');
-                return res.json();
-              })
+              .then((res) => res.json())
               .then((list) => {
                 const grid = document.getElementById('grid');
                 const status = document.getElementById('status');
                 status.remove();
-
                 list.forEach((service) => {
                   const article = document.createElement('article');
-                  article.className = 'rounded-xl border border-slate-200 bg-white p-4 shadow-md shadow-slate-900/5';
+                  article.className = 'rounded-2xl border border-slate-200 bg-white p-5 shadow';
                   article.innerHTML =
-                    '<span class="text-2xl">' + (icons[service.title] || '⚖️') + '</span>' +
-                    '<h3 class="mt-2 text-lg font-semibold text-blue-700">' + service.title + '</h3>' +
-                    '<p class="mt-1 text-sm text-slate-600">' + service.description + '</p>';
+                    '<span class="text-3xl">' + (icons[service.title] || '⚖️') + '</span>' +
+                    '<h3 class="mt-3 text-lg font-semibold text-blue-800">' + service.title + '</h3>' +
+                    '<p class="mt-2 text-sm text-slate-600">' + service.description + '</p>';
                   grid.appendChild(article);
                 });
               })
@@ -132,8 +125,7 @@ if (staticDir) {
           </script>
         </body>
       </html>
-    `);
-  });
+    `);  });
 }
 
 app.listen(PORT, () => {

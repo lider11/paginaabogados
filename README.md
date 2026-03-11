@@ -68,3 +68,8 @@ npm start
 ```
 
 Express detectará `frontend/dist` y lo servirá automáticamente.
+
+
+## Rediseño UX
+- Se mejoró la presentación visual con una composición más clara (hero, servicios, metodología y cierre de valor).
+- Se conservaron y destacaron los servicios jurídicos principales de Lexiuridicus.
