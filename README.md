@@ -90,3 +90,11 @@ npm start
 - CTAs visibles en hero y sección final (WhatsApp y correo).
 - Bloque de confianza con métricas para mejorar conversión.
 - Misma experiencia visual en `frontend` y en `public/index.html` para despliegues sin build.
+
+
+## Propuesta de mejora empresarial implementada
+- Posicionamiento claro en el hero con propuesta de valor orientada a toma de decisiones.
+- Navegación por secciones clave para reducir fricción de lectura.
+- Bloque de métricas de confianza para mejorar percepción de solvencia.
+- Sección de diferenciales basada en buenas prácticas: gobernanza, riesgo, comunicación y confidencialidad.
+- CTA de conversión directa a WhatsApp y correo para acelerar contacto comercial.
