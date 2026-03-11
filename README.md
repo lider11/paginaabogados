@@ -2,6 +2,8 @@
 
 Proyecto full stack con **React** (frontend) y **Node.js + Express** (backend) para mostrar servicios jurídicos.
 
+La UI ahora usa **Tailwind CSS (CDN)** para reducir CSS personalizado y simplificar mantenimiento.
+
 ## Servicios incluidos
 1. Tradición de Acciones
 2. Patrimonio de Familia
@@ -24,6 +26,7 @@ Además, otro riesgo común era que el deploy ejecutara `npm install` en la raí
 2. **Backend robusto para estáticos**: mantiene prioridad por build React (`frontend/dist`, `frontend/build`, `FRONTEND_DIST`) y usa `public/` como respaldo.
 3. **Dependencias en raíz**: se agregaron `express` y `cors` al `package.json` raíz para despliegues que instalan desde root.
 4. **Scripts de despliegue en raíz**: `start`, `dev`, `build`, `install:all`.
+5. **Estilos simplificados**: migración visual a utilidades de Tailwind para reducir el CSS manual.
 
 ## Desarrollo local
 
