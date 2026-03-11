@@ -20,7 +20,7 @@ El comportamiento mostrado en tu captura (mensaje en `/`) ocurre cuando el hosti
 Además, otro riesgo común era que el deploy ejecutara `npm install` en la raíz, pero sin dependencias de backend allí. Eso puede romper `express`/`cors` según cómo esté configurado el proveedor.
 
 ## Arreglos implementados
-1. **Ruta raíz funcional siempre**: se añadió `public/index.html` para que Express tenga una web lista incluso sin `frontend/dist`.
+1. **Ruta raíz funcional siempre**: se añadió `public/index.html` y además un fallback HTML embebido en `backend/server.js`, para que Express muestre una web lista incluso si falta `frontend/dist` y también faltara `public/`.
 2. **Backend robusto para estáticos**: mantiene prioridad por build React (`frontend/dist`, `frontend/build`, `FRONTEND_DIST`) y usa `public/` como respaldo.
 3. **Dependencias en raíz**: se agregaron `express` y `cors` al `package.json` raíz para despliegues que instalan desde root.
 4. **Scripts de despliegue en raíz**: `start`, `dev`, `build`, `install:all`.
@@ -51,7 +51,7 @@ npm install
 npm start
 ```
 
-Con esto ya tendrás una landing funcional en `/` (`public/index.html`) y APIs en:
+Con esto ya tendrás una landing funcional en `/` (desde `public/index.html` o fallback embebido) y APIs en:
 - `/api/health`
 - `/api/services`
 
