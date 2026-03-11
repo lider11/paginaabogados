@@ -83,3 +83,10 @@ npm run install:all
 npm run build
 npm start
 ```
+
+
+## Entrega UX/UI aplicada
+- Navegación superior con anclas a servicios, metodología y contacto.
+- CTAs visibles en hero y sección final (WhatsApp y correo).
+- Bloque de confianza con métricas para mejorar conversión.
+- Misma experiencia visual en `frontend` y en `public/index.html` para despliegues sin build.
