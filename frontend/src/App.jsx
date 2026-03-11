@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 
-const API_URL = 'http://localhost:4000/api/services';
+const API_URL = '/api/services';
+
+const serviceIcons = {
+  'Tradición de Acciones': '📄',
+  'Patrimonio de Familia': '🏡',
+  'Gobierno Corporativo': '🏛️',
+  'Imagen Empresarial': '✨'
+};
 
 function App() {
   const [services, setServices] = useState([]);
@@ -13,6 +20,7 @@ function App() {
         if (!res.ok) {
           throw new Error('No fue posible cargar los servicios.');
         }
+
         return res.json();
       })
       .then((data) => {
@@ -30,14 +38,14 @@ function App() {
       <section className="hero">
         <p className="badge">Lexiuridicus</p>
         <h1>Servicios Jurídicos Especializados</h1>
-        <p>
-          Acompañamos personas y empresas con soluciones legales claras,
-          confiables y orientadas a resultados.
+        <p className="hero-text">
+          Impulsamos decisiones legales sólidas para empresas y familias,
+          combinando estrategia, prevención y cumplimiento.
         </p>
       </section>
 
       <section className="services">
-        <h2>Nuestros 4 servicios</h2>
+        <h2>Nuestros servicios</h2>
 
         {loading && <p>Cargando servicios...</p>}
         {error && <p className="error">{error}</p>}
@@ -45,6 +53,9 @@ function App() {
         <div className="grid">
           {services.map((service) => (
             <article key={service.id} className="card">
+              <span className="icon" aria-hidden="true">
+                {serviceIcons[service.title] || '⚖️'}
+              </span>
               <h3>{service.title}</h3>
               <p>{service.description}</p>
             </article>

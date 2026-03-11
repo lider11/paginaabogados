@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -41,6 +43,25 @@ app.get('/api/health', (_req, res) => {
 app.get('/api/services', (_req, res) => {
   res.json(services);
 });
+
+const frontendDistPath = path.join(__dirname, '../frontend/dist');
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+
+    return res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+} else {
+  app.get('/', (_req, res) => {
+    res.send(
+      'Lexiuridicus API activa. Para servir la web, ejecuta "npm run build" en frontend y reinicia este servidor.'
+    );
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Servidor backend en http://localhost:${PORT}`);

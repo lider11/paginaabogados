@@ -12,7 +12,7 @@ Proyecto full stack con **React** (frontend) y **Node.js + Express** (backend) p
 - `frontend/`: aplicación React con Vite.
 - `backend/`: API REST con Express.
 
-## Ejecutar en local
+## Desarrollo local
 
 ### 1) Backend
 ```bash
@@ -28,4 +28,19 @@ cd frontend
 npm install
 npm run dev
 ```
-Frontend en `http://localhost:5173`.
+Frontend en `http://localhost:5173` con proxy de `/api` hacia el backend.
+
+## Publicación recomendada (un solo servidor Express)
+Para evitar el error **"No se puede obtener /"**, genera el build del frontend y deja que Express lo sirva:
+
+```bash
+cd frontend
+npm install
+npm run build
+
+cd ../backend
+npm install
+npm run start
+```
+
+Con esto, Express sirve `frontend/dist` y la página queda disponible desde `/`.
