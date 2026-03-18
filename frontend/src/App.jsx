@@ -33,14 +33,19 @@ const successCases = [
 
 const testimonials = [
   {
-    quote: 'Pasamos de apagar incendios legales a tener un plan claro con prioridades semanales.',
+    quote: 'En una sesión entendimos riesgos y salimos con prioridades claras para actuar sin improvisar.',
     author: 'Gerente General',
     company: 'Comercializadora regional'
   },
   {
-    quote: 'En la primera sesión entendimos riesgos y acciones concretas para proteger nuestro patrimonio.',
+    quote: 'La hoja de ruta en 48 horas nos permitió ordenar decisiones familiares que llevábamos meses aplazando.',
     author: 'Representante de familia',
     company: 'Bogotá'
+  },
+  {
+    quote: 'La metodología evitó reprocesos y nos dio seguridad jurídica para negociar con aliados estratégicos.',
+    author: 'Directora Administrativa',
+    company: 'PyME de servicios'
   }
 ];
 
@@ -81,6 +86,7 @@ function App() {
             <a href="#servicios" className="hover:text-blue-800">Servicios</a>
             <a href="#metodologia" className="hover:text-blue-800">Metodología</a>
             <a href="#diferenciales" className="hover:text-blue-800">Diferenciales</a>
+            <a href="#testimonios" className="hover:text-blue-800">Testimonios</a>
             <a href="#contacto" className="hover:text-blue-800">Contacto</a>
           </div>
           <a href={whatsappLink} target="_blank" rel="noreferrer" className="rounded-lg bg-blue-900 px-3 py-2 text-xs font-semibold text-white sm:text-sm">
@@ -178,17 +184,21 @@ function App() {
             </div>
           </div>
 
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold text-slate-800">Lo que dicen nuestros clientes</h3>
-            <div className="mt-3 grid gap-4 md:grid-cols-2">
-              {testimonials.map((item) => (
-                <blockquote key={item.quote} className="rounded-xl border border-blue-100 bg-blue-50 p-4">
-                  <p className="text-sm italic text-slate-700">“{item.quote}”</p>
-                  <footer className="mt-3 text-xs font-semibold text-blue-900">{item.author} · {item.company}</footer>
-                </blockquote>
-              ))}
-            </div>
-          </div>
+        </div>
+      </section>
+
+      <section id="testimonios" className="mx-auto max-w-6xl px-5 py-10">
+        <h2 className="text-2xl font-bold text-slate-800">Testimonios breves</h2>
+        <p className="mt-2 max-w-3xl text-sm text-slate-600">
+          Historias cortas de clientes que validan el valor del diagnóstico inicial y la ejecución estratégica.
+        </p>
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
+          {testimonials.map((item) => (
+            <blockquote key={item.quote} className="rounded-xl border border-blue-100 bg-blue-50 p-4">
+              <p className="text-sm italic text-slate-700">“{item.quote}”</p>
+              <footer className="mt-3 text-xs font-semibold text-blue-900">{item.author} · {item.company}</footer>
+            </blockquote>
+          ))}
         </div>
       </section>
 
