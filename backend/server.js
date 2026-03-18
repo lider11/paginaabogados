@@ -106,6 +106,43 @@ function renderEmbeddedFallback() {
           </section>
 
           <section class="section">
+            <div class="grid grid-3">
+              <article class="card"><strong>+10</strong><p class="muted">Años en asesoría legal corporativa</p></article>
+              <article class="card"><strong>4</strong><p class="muted">Unidades de servicio especializadas</p></article>
+              <article class="card"><strong>24/7</strong><p class="muted">Canales abiertos para respuesta inicial</p></article>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Servicios legales especializados</h2>
+            <p class="muted">Líneas de trabajo diseñadas para proteger patrimonio, gobierno y crecimiento empresarial.</p>
+            <div class="grid grid-3">
+              <article class="card"><strong>Tradición de Acciones</strong><p class="muted">Asesoría para estructurar y formalizar transferencias con seguridad jurídica.</p></article>
+              <article class="card"><strong>Patrimonio de Familia</strong><p class="muted">Protección legal del patrimonio familiar con acompañamiento en cada etapa.</p></article>
+              <article class="card"><strong>Gobierno Corporativo</strong><p class="muted">Diseño de prácticas de gobierno para fortalecer control y toma de decisiones.</p></article>
+              <article class="card"><strong>Imagen Empresarial</strong><p class="muted">Soporte legal estratégico para construir y proteger la reputación empresarial.</p></article>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Metodología</h2>
+            <div class="grid grid-3">
+              <article class="card"><strong>01. Diagnóstico</strong><p class="muted">Levantamos hechos, riesgos e impacto jurídico.</p></article>
+              <article class="card"><strong>02. Estrategia</strong><p class="muted">Definimos ruta legal, tiempos y documentos críticos.</p></article>
+              <article class="card"><strong>03. Ejecución</strong><p class="muted">Implementamos y damos seguimiento hasta el cierre.</p></article>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Diferenciales</h2>
+            <div class="grid grid-3">
+              <article class="card"><strong>Gobernanza y trazabilidad</strong><p class="muted">Cada caso tiene plan, hitos y evidencia documental.</p></article>
+              <article class="card"><strong>Gestión de riesgos legales</strong><p class="muted">Priorizamos prevención para evitar contingencias y costos innecesarios.</p></article>
+              <article class="card"><strong>Comunicación ejecutiva</strong><p class="muted">Traducimos lenguaje legal a decisiones claras para líderes y equipos.</p></article>
+            </div>
+          </section>
+
+          <section class="section">
             <h2>Prueba social y evidencia de resultados</h2>
             <div class="grid grid-3">
               <article class="card"><strong>150+</strong><p class="muted">Diagnósticos legales realizados</p></article>
@@ -120,6 +157,15 @@ function renderEmbeddedFallback() {
               <blockquote class="card">“En una sesión entendimos riesgos y salimos con prioridades claras para actuar sin improvisar.”</blockquote>
               <blockquote class="card">“La hoja de ruta en 48 horas nos permitió ordenar decisiones familiares que llevábamos meses aplazando.”</blockquote>
               <blockquote class="card">“La metodología evitó reprocesos y nos dio seguridad jurídica para negociar con aliados estratégicos.”</blockquote>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Solicita una evaluación inicial</h2>
+            <p class="muted">Agenda una reunión y recibe una ruta legal priorizada para tu caso.</p>
+            <div class="grid grid-3">
+              <a class="card" href="https://wa.me/573000000000" target="_blank" rel="noreferrer"><strong>WhatsApp</strong><p class="muted">Agendar asesoría inmediata</p></a>
+              <a class="card" href="mailto:contacto@lexiuridicus.site"><strong>Email</strong><p class="muted">contacto@lexiuridicus.site</p></a>
             </div>
           </section>
         </main>
