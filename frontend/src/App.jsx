@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 const API_URL = '/api/services';
 const whatsappLink = 'https://wa.me/573000000000';
 const email = 'contacto@lexiuridicus.site';
+const diagnosticOffer = 'Diagnóstico legal inicial (30 min) + hoja de ruta priorizada en 48h';
 
 const serviceIcons = {
   'Tradición de Acciones': '📄',
@@ -57,6 +58,9 @@ function App() {
             Convertimos temas legales complejos en planes accionables, con enfoque preventivo,
             cumplimiento normativo y visión empresarial.
           </p>
+          <p className="mt-4 inline-flex rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-medium text-white">
+            {diagnosticOffer}
+          </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <a href="#contacto" className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-blue-900">Solicitar diagnóstico</a>
             <a href="#servicios" className="rounded-lg border border-white/50 px-4 py-2 text-sm font-semibold text-white">Conocer servicios</a>
@@ -109,6 +113,15 @@ function App() {
         <div className="rounded-2xl border border-blue-200 bg-blue-50 p-6">
           <h2 className="text-2xl font-bold text-blue-900">Solicita una evaluación inicial</h2>
           <p className="mt-2 text-slate-700">Agenda una reunión y recibe una ruta legal priorizada para tu caso.</p>
+          <div className="mt-4 rounded-xl border border-blue-200 bg-white p-4">
+            <p className="text-sm font-semibold text-blue-900">Oferta de entrada</p>
+            <p className="mt-1 text-sm text-slate-700">{diagnosticOffer}</p>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+              <li>Incluye evaluación de riesgos y prioridades legales.</li>
+              <li>Definimos próximos pasos, tiempos y documentos críticos.</li>
+              <li>Aplica para empresas y familias con necesidades preventivas o urgentes.</li>
+            </ul>
+          </div>
           <div className="mt-4 flex flex-wrap gap-3">
             <a href={whatsappLink} target="_blank" rel="noreferrer" className="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">WhatsApp</a>
             <a href={`mailto:${email}`} className="rounded-lg border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-900">{email}</a>
