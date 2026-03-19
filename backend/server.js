@@ -60,14 +60,22 @@ app.get('/api/services', (_req, res) => {
   res.json(services);
 });
 
-app.get('/rutas/:slug', (req, res, next) => {
-  const rawSlug = String(req.params.slug || '').toLowerCase().replace(/\.html$/i, '');
+function tryServeRoutePage(slug, res, next) {
+  const rawSlug = String(slug || '').toLowerCase().replace(/\.html$/i, '');
   const safeSlug = rawSlug.replace(/[^a-z-]/gi, '');
   const routeFile = path.join(__dirname, `../public/rutas/${safeSlug}.html`);
   if (fs.existsSync(routeFile)) {
     return res.sendFile(routeFile);
   }
   return next();
+}
+
+app.get('/rutas/:slug.html', (req, res, next) => {
+  return tryServeRoutePage(req.params.slug, res, next);
+});
+
+app.get('/rutas/:slug', (req, res, next) => {
+  return tryServeRoutePage(req.params.slug, res, next);
 });
 
 function renderEmbeddedFallback() {
@@ -262,6 +270,10 @@ if (staticDir) {
   app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api')) {
       return next();
+    }
+    if (req.path.startsWith('/rutas/')) {
+      const routeSlug = req.path.split('/').pop() || '';
+      return tryServeRoutePage(routeSlug, res, next);
     }
 
     return res.sendFile(path.join(staticDir, 'index.html'));
