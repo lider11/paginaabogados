@@ -106,7 +106,7 @@ function renderEmbeddedFallback() {
             <span class="offer">Diagnóstico legal inicial (30 min) + hoja de ruta priorizada en 48h</span>
           </section>
 
-          <section class="section">
+          <section id="contacto" class="section">
             <div class="grid grid-3">
               <article class="card"><strong>+10</strong><p class="muted">Años en asesoría legal corporativa</p></article>
               <article class="card"><strong>4</strong><p class="muted">Unidades de servicio especializadas</p></article>
@@ -117,6 +117,7 @@ function renderEmbeddedFallback() {
           <section class="section">
             <h2>Elige tu ruta según tu perfil</h2>
             <p class="muted">Segmentamos el diagnóstico para acelerar decisiones según tipo de cliente.</p>
+            <p id="route-status" style="margin-top:6px;font-size:13px;font-weight:700;color:#1e3a8a;"></p>
             <div class="grid grid-3">
               <article class="card">
                 <strong>Ruta Empresas</strong>
@@ -183,6 +184,7 @@ function renderEmbeddedFallback() {
             <p class="muted">Agenda una reunión y recibe una ruta legal priorizada para tu caso.</p>
             <div class="card" style="margin-bottom:12px;">
               <strong>Formulario corto de precalificación</strong>
+              <p id="route-status-contact" style="margin:6px 0 0 0;font-size:12px;font-weight:700;color:#1e3a8a;"></p>
               <p class="muted">Este resumen se enviará automáticamente al abrir WhatsApp.</p>
               <div class="grid grid-3">
                 <label>Perfil
@@ -224,6 +226,8 @@ function renderEmbeddedFallback() {
           const urgencia = document.getElementById('lead-urgencia');
           const ciudad = document.getElementById('lead-ciudad');
           const whatsappEl = document.getElementById('whatsapp-link');
+          const routeStatus = document.getElementById('route-status');
+          const routeStatusContact = document.getElementById('route-status-contact');
 
           function updateWhatsappLink() {
             const message = [
@@ -249,13 +253,17 @@ function renderEmbeddedFallback() {
                 perfil.value = 'Empresa';
                 necesidad.value = 'Prevención legal';
                 urgencia.value = 'Esta semana';
+                routeStatus.textContent = 'Ruta activa: Ruta Empresas';
+                routeStatusContact.textContent = 'Ruta aplicada: Ruta Empresas';
               } else {
                 perfil.value = 'Familia';
                 necesidad.value = 'Protección patrimonial';
                 urgencia.value = 'Este mes';
+                routeStatus.textContent = 'Ruta activa: Ruta Familias';
+                routeStatusContact.textContent = 'Ruta aplicada: Ruta Familias';
               }
               updateWhatsappLink();
-              window.location.hash = 'contacto';
+              document.getElementById('contacto').scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
           });
         </script>

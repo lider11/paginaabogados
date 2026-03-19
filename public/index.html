@@ -46,6 +46,7 @@
       <section id="rutas" class="mx-auto max-w-6xl px-5 pb-10">
         <h2 class="text-2xl font-bold text-slate-800">Elige tu ruta según tu perfil</h2>
         <p class="mt-1 text-slate-600">Segmentamos el diagnóstico para acelerar decisiones según tipo de cliente.</p>
+        <p id="route-status" class="mt-2 text-sm font-semibold text-blue-900"></p>
         <div class="mt-4 grid gap-4 md:grid-cols-2">
           <article class="rounded-xl border border-slate-200 bg-white p-5">
             <p class="text-lg font-semibold text-blue-900">Ruta Empresas</p>
@@ -170,6 +171,7 @@
           </div>
           <div class="mt-4 rounded-xl border border-blue-200 bg-white p-4">
             <p class="text-sm font-semibold text-blue-900">Formulario corto de precalificación</p>
+            <p id="route-status-contact" class="mt-1 text-xs font-semibold text-blue-800"></p>
             <p class="mt-1 text-xs text-slate-600">Este resumen se enviará automáticamente al abrir WhatsApp.</p>
             <div class="mt-3 grid gap-3 md:grid-cols-2">
               <label class="text-sm text-slate-700">
@@ -274,6 +276,8 @@
       const urgencia = document.getElementById('lead-urgencia');
       const ciudad = document.getElementById('lead-ciudad');
       const whatsappEl = document.getElementById('whatsapp-link');
+      const routeStatus = document.getElementById('route-status');
+      const routeStatusContact = document.getElementById('route-status-contact');
 
       function updateWhatsappLink() {
         const message = [
@@ -299,13 +303,17 @@
             perfil.value = 'Empresa';
             necesidad.value = 'Prevención legal';
             urgencia.value = 'Esta semana';
+            routeStatus.textContent = 'Ruta activa: Ruta Empresas';
+            routeStatusContact.textContent = 'Ruta aplicada: Ruta Empresas';
           } else {
             perfil.value = 'Familia';
             necesidad.value = 'Protección patrimonial';
             urgencia.value = 'Este mes';
+            routeStatus.textContent = 'Ruta activa: Ruta Familias';
+            routeStatusContact.textContent = 'Ruta aplicada: Ruta Familias';
           }
           updateWhatsappLink();
-          window.location.hash = 'contacto';
+          document.getElementById('contacto').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       });
     </script>
