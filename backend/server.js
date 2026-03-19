@@ -163,12 +163,67 @@ function renderEmbeddedFallback() {
           <section class="section">
             <h2>Solicita una evaluación inicial</h2>
             <p class="muted">Agenda una reunión y recibe una ruta legal priorizada para tu caso.</p>
+            <div class="card" style="margin-bottom:12px;">
+              <strong>Formulario corto de precalificación</strong>
+              <p class="muted">Este resumen se enviará automáticamente al abrir WhatsApp.</p>
+              <div class="grid grid-3">
+                <label>Perfil
+                  <select id="lead-perfil" style="width:100%;margin-top:6px;padding:8px;border-radius:8px;border:1px solid #cbd5e1;">
+                    <option>Empresa</option>
+                    <option>Familia</option>
+                  </select>
+                </label>
+                <label>Necesidad principal
+                  <select id="lead-necesidad" style="width:100%;margin-top:6px;padding:8px;border-radius:8px;border:1px solid #cbd5e1;">
+                    <option>Prevención legal</option>
+                    <option>Urgencia legal</option>
+                    <option>Revisión contractual</option>
+                    <option>Protección patrimonial</option>
+                  </select>
+                </label>
+                <label>Urgencia
+                  <select id="lead-urgencia" style="width:100%;margin-top:6px;padding:8px;border-radius:8px;border:1px solid #cbd5e1;">
+                    <option>Hoy</option>
+                    <option selected>Esta semana</option>
+                    <option>Este mes</option>
+                  </select>
+                </label>
+                <label>Ciudad
+                  <input id="lead-ciudad" placeholder="Ej. Bogotá" style="width:100%;margin-top:6px;padding:8px;border-radius:8px;border:1px solid #cbd5e1;" />
+                </label>
+              </div>
+            </div>
             <div class="grid grid-3">
-              <a class="card" href="https://wa.me/573000000000" target="_blank" rel="noreferrer"><strong>WhatsApp</strong><p class="muted">Agendar asesoría inmediata</p></a>
+              <a id="whatsapp-link" class="card" href="https://wa.me/573000000000" target="_blank" rel="noreferrer"><strong>WhatsApp</strong><p class="muted">Agendar asesoría inmediata</p></a>
               <a class="card" href="mailto:contacto@lexiuridicus.site"><strong>Email</strong><p class="muted">contacto@lexiuridicus.site</p></a>
             </div>
           </section>
         </main>
+        <script>
+          const whatsappBase = 'https://wa.me/573000000000';
+          const perfil = document.getElementById('lead-perfil');
+          const necesidad = document.getElementById('lead-necesidad');
+          const urgencia = document.getElementById('lead-urgencia');
+          const ciudad = document.getElementById('lead-ciudad');
+          const whatsappEl = document.getElementById('whatsapp-link');
+
+          function updateWhatsappLink() {
+            const message = [
+              'Hola, quiero agendar el diagnóstico legal inicial.',
+              'Perfil: ' + perfil.value,
+              'Necesidad: ' + necesidad.value,
+              'Urgencia: ' + urgencia.value,
+              'Ciudad: ' + (ciudad.value || 'No especificada')
+            ].join('\\n');
+            whatsappEl.href = whatsappBase + '?text=' + encodeURIComponent(message);
+          }
+
+          [perfil, necesidad, urgencia, ciudad].forEach((field) => {
+            field.addEventListener('input', updateWhatsappLink);
+            field.addEventListener('change', updateWhatsappLink);
+          });
+          updateWhatsappLink();
+        </script>
       </body>
     </html>
   `;
