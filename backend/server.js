@@ -114,6 +114,23 @@ function renderEmbeddedFallback() {
           </section>
 
           <section class="section">
+            <h2>Elige tu ruta según tu perfil</h2>
+            <p class="muted">Segmentamos el diagnóstico para acelerar decisiones según tipo de cliente.</p>
+            <div class="grid grid-3">
+              <article class="card">
+                <strong>Ruta Empresas</strong>
+                <p class="muted">Gobierno corporativo, contingencias y compliance.</p>
+                <button type="button" data-route="empresa" style="margin-top:8px;padding:8px 10px;border:0;border-radius:8px;background:#1e3a8a;color:#fff;cursor:pointer;">Iniciar Ruta Empresas</button>
+              </article>
+              <article class="card">
+                <strong>Ruta Familias</strong>
+                <p class="muted">Patrimonio, sucesión y protección de activos.</p>
+                <button type="button" data-route="familia" style="margin-top:8px;padding:8px 10px;border:0;border-radius:8px;background:#1e3a8a;color:#fff;cursor:pointer;">Iniciar Ruta Familias</button>
+              </article>
+            </div>
+          </section>
+
+          <section class="section">
             <h2>Servicios legales especializados</h2>
             <p class="muted">Líneas de trabajo diseñadas para proteger patrimonio, gobierno y crecimiento empresarial.</p>
             <div class="grid grid-3">
@@ -223,6 +240,23 @@ function renderEmbeddedFallback() {
             field.addEventListener('change', updateWhatsappLink);
           });
           updateWhatsappLink();
+
+          document.querySelectorAll('[data-route]').forEach((button) => {
+            button.addEventListener('click', () => {
+              const route = button.getAttribute('data-route');
+              if (route === 'empresa') {
+                perfil.value = 'Empresa';
+                necesidad.value = 'Prevención legal';
+                urgencia.value = 'Esta semana';
+              } else {
+                perfil.value = 'Familia';
+                necesidad.value = 'Protección patrimonial';
+                urgencia.value = 'Este mes';
+              }
+              updateWhatsappLink();
+              window.location.hash = 'contacto';
+            });
+          });
         </script>
       </body>
     </html>

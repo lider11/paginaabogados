@@ -77,6 +77,30 @@ const fallbackServices = [
     description: 'Soporte legal estratégico para la construcción y protección de la imagen empresarial frente a clientes, aliados y mercado.'
   }
 ];
+const icpRoutes = [
+  {
+    id: 'empresa',
+    title: 'Ruta Empresas',
+    subtitle: 'Gobierno corporativo, contingencias y compliance',
+    highlights: ['Orden societario y actas', 'Riesgos contractuales', 'Decisiones con trazabilidad'],
+    defaultForm: {
+      perfil: 'Empresa',
+      necesidad: 'Prevención legal',
+      urgencia: 'Esta semana'
+    }
+  },
+  {
+    id: 'familia',
+    title: 'Ruta Familias',
+    subtitle: 'Patrimonio, sucesión y protección de activos',
+    highlights: ['Estructura patrimonial', 'Documentación crítica', 'Plan de continuidad familiar'],
+    defaultForm: {
+      perfil: 'Familia',
+      necesidad: 'Protección patrimonial',
+      urgencia: 'Este mes'
+    }
+  }
+];
 
 function App() {
   const [services, setServices] = useState([]);
@@ -99,6 +123,10 @@ function App() {
     ].join('\n')
   );
   const whatsappLeadLink = `${whatsappLink}?text=${whatsappPrefill}`;
+  const applyRoute = (route) => {
+    setLeadForm((prev) => ({ ...prev, ...route.defaultForm }));
+    window.location.hash = 'contacto';
+  };
 
   useEffect(() => {
     fetch(API_URL)
@@ -126,6 +154,7 @@ function App() {
             <a href="#servicios" className="hover:text-blue-800">Servicios</a>
             <a href="#metodologia" className="hover:text-blue-800">Metodología</a>
             <a href="#diferenciales" className="hover:text-blue-800">Diferenciales</a>
+            <a href="#rutas" className="hover:text-blue-800">Rutas</a>
             <a href="#testimonios" className="hover:text-blue-800">Testimonios</a>
             <a href="#contacto" className="hover:text-blue-800">Contacto</a>
           </div>
@@ -157,6 +186,29 @@ function App() {
         <div className="rounded-xl border border-slate-200 bg-white p-4 text-center"><p className="text-2xl font-bold text-blue-900">+10</p><p className="text-sm text-slate-600">Años en asesoría legal corporativa</p></div>
         <div className="rounded-xl border border-slate-200 bg-white p-4 text-center"><p className="text-2xl font-bold text-blue-900">4</p><p className="text-sm text-slate-600">Unidades de servicio especializadas</p></div>
         <div className="rounded-xl border border-slate-200 bg-white p-4 text-center"><p className="text-2xl font-bold text-blue-900">24/7</p><p className="text-sm text-slate-600">Canales abiertos para respuesta inicial</p></div>
+      </section>
+
+      <section id="rutas" className="mx-auto max-w-6xl px-5 pb-10">
+        <h2 className="text-2xl font-bold text-slate-800">Elige tu ruta según tu perfil</h2>
+        <p className="mt-1 text-slate-600">Segmentamos el diagnóstico para acelerar decisiones según tipo de cliente.</p>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          {icpRoutes.map((route) => (
+            <article key={route.id} className="rounded-xl border border-slate-200 bg-white p-5">
+              <p className="text-lg font-semibold text-blue-900">{route.title}</p>
+              <p className="mt-1 text-sm text-slate-600">{route.subtitle}</p>
+              <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                {route.highlights.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+              <button
+                type="button"
+                onClick={() => applyRoute(route)}
+                className="mt-4 rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white"
+              >
+                Iniciar {route.title}
+              </button>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section id="servicios" className="mx-auto max-w-6xl px-5 pb-12">
