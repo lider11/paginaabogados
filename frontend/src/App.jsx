@@ -113,6 +113,7 @@ function App() {
     ciudad: ''
   });
   const [selectedRoute, setSelectedRoute] = useState('');
+  const [routeAppliedAt, setRouteAppliedAt] = useState('');
 
   const whatsappPrefill = encodeURIComponent(
     [
@@ -127,6 +128,7 @@ function App() {
   const applyRoute = (route) => {
     setLeadForm((prev) => ({ ...prev, ...route.defaultForm }));
     setSelectedRoute(route.title);
+    setRouteAppliedAt(new Date().toLocaleTimeString('es-CO'));
     document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
@@ -196,7 +198,7 @@ function App() {
       <section id="rutas" className="mx-auto max-w-6xl px-5 pb-10">
         <h2 className="text-2xl font-bold text-slate-800">Elige tu ruta según tu perfil</h2>
         <p className="mt-1 text-slate-600">Segmentamos el diagnóstico para acelerar decisiones según tipo de cliente.</p>
-        {selectedRoute && <p className="mt-2 text-sm font-semibold text-blue-900">Ruta activa: {selectedRoute}</p>}
+        {selectedRoute && <p className="mt-2 text-sm font-semibold text-blue-900">Ruta activa: {selectedRoute} · actualizada {routeAppliedAt}</p>}
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           {icpRoutes.map((route) => (
             <article key={route.id} className="rounded-xl border border-slate-200 bg-white p-5">
@@ -315,7 +317,7 @@ function App() {
           </div>
           <div className="mt-4 rounded-xl border border-blue-200 bg-white p-4">
             <p className="text-sm font-semibold text-blue-900">Formulario corto de precalificación</p>
-            {selectedRoute && <p className="mt-1 text-xs font-semibold text-blue-800">Ruta aplicada: {selectedRoute}</p>}
+            {selectedRoute && <p className="mt-1 text-xs font-semibold text-blue-800">Ruta aplicada: {selectedRoute} · {routeAppliedAt}</p>}
             <p className="mt-1 text-xs text-slate-600">Este resumen se enviará automáticamente al abrir WhatsApp.</p>
             <div className="mt-3 grid gap-3 md:grid-cols-2">
               <label className="text-sm text-slate-700">

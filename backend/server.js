@@ -253,14 +253,16 @@ function renderEmbeddedFallback() {
                 perfil.value = 'Empresa';
                 necesidad.value = 'Prevención legal';
                 urgencia.value = 'Esta semana';
-                routeStatus.textContent = 'Ruta activa: Ruta Empresas';
-                routeStatusContact.textContent = 'Ruta aplicada: Ruta Empresas';
+                const stamp = new Date().toLocaleTimeString('es-CO');
+                routeStatus.textContent = 'Ruta activa: Ruta Empresas · actualizada ' + stamp;
+                routeStatusContact.textContent = 'Ruta aplicada: Ruta Empresas · ' + stamp;
               } else {
                 perfil.value = 'Familia';
                 necesidad.value = 'Protección patrimonial';
                 urgencia.value = 'Este mes';
-                routeStatus.textContent = 'Ruta activa: Ruta Familias';
-                routeStatusContact.textContent = 'Ruta aplicada: Ruta Familias';
+                const stamp = new Date().toLocaleTimeString('es-CO');
+                routeStatus.textContent = 'Ruta activa: Ruta Familias · actualizada ' + stamp;
+                routeStatusContact.textContent = 'Ruta aplicada: Ruta Familias · ' + stamp;
               }
               updateWhatsappLink();
               document.getElementById('contacto').scrollIntoView({ behavior: 'smooth', block: 'start' });
