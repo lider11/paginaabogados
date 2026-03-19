@@ -81,24 +81,16 @@ const icpRoutes = [
   {
     id: 'empresa',
     title: 'Ruta Empresas',
+    href: '/rutas/empresas',
     subtitle: 'Gobierno corporativo, contingencias y compliance',
-    highlights: ['Orden societario y actas', 'Riesgos contractuales', 'Decisiones con trazabilidad'],
-    defaultForm: {
-      perfil: 'Empresa',
-      necesidad: 'Prevención legal',
-      urgencia: 'Esta semana'
-    }
+    highlights: ['Orden societario y actas', 'Riesgos contractuales', 'Decisiones con trazabilidad']
   },
   {
     id: 'familia',
     title: 'Ruta Familias',
+    href: '/rutas/familias',
     subtitle: 'Patrimonio, sucesión y protección de activos',
-    highlights: ['Estructura patrimonial', 'Documentación crítica', 'Plan de continuidad familiar'],
-    defaultForm: {
-      perfil: 'Familia',
-      necesidad: 'Protección patrimonial',
-      urgencia: 'Este mes'
-    }
+    highlights: ['Estructura patrimonial', 'Documentación crítica', 'Plan de continuidad familiar']
   }
 ];
 
@@ -112,8 +104,6 @@ function App() {
     urgencia: 'Esta semana',
     ciudad: ''
   });
-  const [selectedRoute, setSelectedRoute] = useState('');
-  const [routeAppliedAt, setRouteAppliedAt] = useState('');
 
   const whatsappPrefill = encodeURIComponent(
     [
@@ -125,12 +115,6 @@ function App() {
     ].join('\n')
   );
   const whatsappLeadLink = `${whatsappLink}?text=${whatsappPrefill}`;
-  const applyRoute = (route) => {
-    setLeadForm((prev) => ({ ...prev, ...route.defaultForm }));
-    setSelectedRoute(route.title);
-    setRouteAppliedAt(new Date().toLocaleTimeString('es-CO'));
-    document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
 
   useEffect(() => {
     fetch(API_URL)
@@ -198,7 +182,6 @@ function App() {
       <section id="rutas" className="mx-auto max-w-6xl px-5 pb-10">
         <h2 className="text-2xl font-bold text-slate-800">Elige tu ruta según tu perfil</h2>
         <p className="mt-1 text-slate-600">Segmentamos el diagnóstico para acelerar decisiones según tipo de cliente.</p>
-        {selectedRoute && <p className="mt-2 text-sm font-semibold text-blue-900">Ruta activa: {selectedRoute} · actualizada {routeAppliedAt}</p>}
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           {icpRoutes.map((route) => (
             <article key={route.id} className="rounded-xl border border-slate-200 bg-white p-5">
@@ -207,13 +190,9 @@ function App() {
               <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
                 {route.highlights.map((item) => <li key={item}>{item}</li>)}
               </ul>
-              <button
-                type="button"
-                onClick={() => applyRoute(route)}
-                className="mt-4 rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white"
-              >
+              <a href={route.href} className="mt-4 inline-block rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">
                 Iniciar {route.title}
-              </button>
+              </a>
             </article>
           ))}
         </div>
@@ -317,7 +296,6 @@ function App() {
           </div>
           <div className="mt-4 rounded-xl border border-blue-200 bg-white p-4">
             <p className="text-sm font-semibold text-blue-900">Formulario corto de precalificación</p>
-            {selectedRoute && <p className="mt-1 text-xs font-semibold text-blue-800">Ruta aplicada: {selectedRoute} · {routeAppliedAt}</p>}
             <p className="mt-1 text-xs text-slate-600">Este resumen se enviará automáticamente al abrir WhatsApp.</p>
             <div className="mt-3 grid gap-3 md:grid-cols-2">
               <label className="text-sm text-slate-700">

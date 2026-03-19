@@ -60,6 +60,15 @@ app.get('/api/services', (_req, res) => {
   res.json(services);
 });
 
+app.get('/rutas/:slug', (req, res, next) => {
+  const safeSlug = String(req.params.slug || '').replace(/[^a-z-]/gi, '');
+  const routeFile = path.join(__dirname, `../public/rutas/${safeSlug}.html`);
+  if (fs.existsSync(routeFile)) {
+    return res.sendFile(routeFile);
+  }
+  return next();
+});
+
 function renderEmbeddedFallback() {
   const publicIndex = path.join(__dirname, '../public/index.html');
   if (fs.existsSync(publicIndex)) {
@@ -95,7 +104,6 @@ function renderEmbeddedFallback() {
         <header class="header">
           <nav class="container nav">
             <p class="brand">Lexiuridicus</p>
-            <a href="#rutas" style="font-size:14px;font-weight:600;color:#1e3a8a;text-decoration:underline;">Ver rutas</a>
           </nav>
         </header>
         <main class="container">
@@ -117,17 +125,16 @@ function renderEmbeddedFallback() {
           <section class="section">
             <h2>Elige tu ruta según tu perfil</h2>
             <p class="muted">Segmentamos el diagnóstico para acelerar decisiones según tipo de cliente.</p>
-            <p id="route-status" style="margin-top:6px;font-size:13px;font-weight:700;color:#1e3a8a;"></p>
             <div class="grid grid-3">
               <article class="card">
                 <strong>Ruta Empresas</strong>
                 <p class="muted">Gobierno corporativo, contingencias y compliance.</p>
-                <button type="button" data-route="empresa" style="margin-top:8px;padding:8px 10px;border:0;border-radius:8px;background:#1e3a8a;color:#fff;cursor:pointer;">Iniciar Ruta Empresas</button>
+                <a href="/rutas/empresas" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Empresas</a>
               </article>
               <article class="card">
                 <strong>Ruta Familias</strong>
                 <p class="muted">Patrimonio, sucesión y protección de activos.</p>
-                <button type="button" data-route="familia" style="margin-top:8px;padding:8px 10px;border:0;border-radius:8px;background:#1e3a8a;color:#fff;cursor:pointer;">Iniciar Ruta Familias</button>
+                <a href="/rutas/familias" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Familias</a>
               </article>
             </div>
           </section>
@@ -184,7 +191,6 @@ function renderEmbeddedFallback() {
             <p class="muted">Agenda una reunión y recibe una ruta legal priorizada para tu caso.</p>
             <div class="card" style="margin-bottom:12px;">
               <strong>Formulario corto de precalificación</strong>
-              <p id="route-status-contact" style="margin:6px 0 0 0;font-size:12px;font-weight:700;color:#1e3a8a;"></p>
               <p class="muted">Este resumen se enviará automáticamente al abrir WhatsApp.</p>
               <div class="grid grid-3">
                 <label>Perfil
@@ -226,8 +232,6 @@ function renderEmbeddedFallback() {
           const urgencia = document.getElementById('lead-urgencia');
           const ciudad = document.getElementById('lead-ciudad');
           const whatsappEl = document.getElementById('whatsapp-link');
-          const routeStatus = document.getElementById('route-status');
-          const routeStatusContact = document.getElementById('route-status-contact');
 
           function updateWhatsappLink() {
             const message = [
@@ -245,29 +249,6 @@ function renderEmbeddedFallback() {
             field.addEventListener('change', updateWhatsappLink);
           });
           updateWhatsappLink();
-
-          document.querySelectorAll('[data-route]').forEach((button) => {
-            button.addEventListener('click', () => {
-              const route = button.getAttribute('data-route');
-              if (route === 'empresa') {
-                perfil.value = 'Empresa';
-                necesidad.value = 'Prevención legal';
-                urgencia.value = 'Esta semana';
-                const stamp = new Date().toLocaleTimeString('es-CO');
-                routeStatus.textContent = 'Ruta activa: Ruta Empresas · actualizada ' + stamp;
-                routeStatusContact.textContent = 'Ruta aplicada: Ruta Empresas · ' + stamp;
-              } else {
-                perfil.value = 'Familia';
-                necesidad.value = 'Protección patrimonial';
-                urgencia.value = 'Este mes';
-                const stamp = new Date().toLocaleTimeString('es-CO');
-                routeStatus.textContent = 'Ruta activa: Ruta Familias · actualizada ' + stamp;
-                routeStatusContact.textContent = 'Ruta aplicada: Ruta Familias · ' + stamp;
-              }
-              updateWhatsappLink();
-              document.getElementById('contacto').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-          });
         </script>
       </body>
     </html>
