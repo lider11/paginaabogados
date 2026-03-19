@@ -81,14 +81,14 @@ const icpRoutes = [
   {
     id: 'empresa',
     title: 'Ruta Empresas',
-    href: '/rutas/empresas',
+    href: '/rutas/empresas.html',
     subtitle: 'Gobierno corporativo, contingencias y compliance',
     highlights: ['Orden societario y actas', 'Riesgos contractuales', 'Decisiones con trazabilidad']
   },
   {
     id: 'familia',
     title: 'Ruta Familias',
-    href: '/rutas/familias',
+    href: '/rutas/familias.html',
     subtitle: 'Patrimonio, sucesión y protección de activos',
     highlights: ['Estructura patrimonial', 'Documentación crítica', 'Plan de continuidad familiar']
   }

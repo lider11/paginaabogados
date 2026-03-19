@@ -61,7 +61,8 @@ app.get('/api/services', (_req, res) => {
 });
 
 app.get('/rutas/:slug', (req, res, next) => {
-  const safeSlug = String(req.params.slug || '').replace(/[^a-z-]/gi, '');
+  const rawSlug = String(req.params.slug || '').toLowerCase().replace(/\.html$/i, '');
+  const safeSlug = rawSlug.replace(/[^a-z-]/gi, '');
   const routeFile = path.join(__dirname, `../public/rutas/${safeSlug}.html`);
   if (fs.existsSync(routeFile)) {
     return res.sendFile(routeFile);
@@ -129,12 +130,12 @@ function renderEmbeddedFallback() {
               <article class="card">
                 <strong>Ruta Empresas</strong>
                 <p class="muted">Gobierno corporativo, contingencias y compliance.</p>
-                <a href="/rutas/empresas" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Empresas</a>
+                <a href="/rutas/empresas.html" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Empresas</a>
               </article>
               <article class="card">
                 <strong>Ruta Familias</strong>
                 <p class="muted">Patrimonio, sucesión y protección de activos.</p>
-                <a href="/rutas/familias" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Familias</a>
+                <a href="/rutas/familias.html" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Familias</a>
               </article>
             </div>
           </section>
