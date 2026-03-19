@@ -60,6 +60,23 @@ function App() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [leadForm, setLeadForm] = useState({
+    perfil: 'Empresa',
+    necesidad: 'Prevención legal',
+    urgencia: 'Esta semana',
+    ciudad: ''
+  });
+
+  const whatsappPrefill = encodeURIComponent(
+    [
+      'Hola, quiero agendar el diagnóstico legal inicial.',
+      `Perfil: ${leadForm.perfil}`,
+      `Necesidad: ${leadForm.necesidad}`,
+      `Urgencia: ${leadForm.urgencia}`,
+      `Ciudad: ${leadForm.ciudad || 'No especificada'}`
+    ].join('\n')
+  );
+  const whatsappLeadLink = `${whatsappLink}?text=${whatsappPrefill}`;
 
   useEffect(() => {
     fetch(API_URL)
@@ -215,8 +232,59 @@ function App() {
               <li>Aplica para empresas y familias con necesidades preventivas o urgentes.</li>
             </ul>
           </div>
+          <div className="mt-4 rounded-xl border border-blue-200 bg-white p-4">
+            <p className="text-sm font-semibold text-blue-900">Formulario corto de precalificación</p>
+            <p className="mt-1 text-xs text-slate-600">Este resumen se enviará automáticamente al abrir WhatsApp.</p>
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              <label className="text-sm text-slate-700">
+                Perfil
+                <select
+                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  value={leadForm.perfil}
+                  onChange={(e) => setLeadForm((prev) => ({ ...prev, perfil: e.target.value }))}
+                >
+                  <option>Empresa</option>
+                  <option>Familia</option>
+                </select>
+              </label>
+              <label className="text-sm text-slate-700">
+                Necesidad principal
+                <select
+                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  value={leadForm.necesidad}
+                  onChange={(e) => setLeadForm((prev) => ({ ...prev, necesidad: e.target.value }))}
+                >
+                  <option>Prevención legal</option>
+                  <option>Urgencia legal</option>
+                  <option>Revisión contractual</option>
+                  <option>Protección patrimonial</option>
+                </select>
+              </label>
+              <label className="text-sm text-slate-700">
+                Urgencia
+                <select
+                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  value={leadForm.urgencia}
+                  onChange={(e) => setLeadForm((prev) => ({ ...prev, urgencia: e.target.value }))}
+                >
+                  <option>Hoy</option>
+                  <option>Esta semana</option>
+                  <option>Este mes</option>
+                </select>
+              </label>
+              <label className="text-sm text-slate-700">
+                Ciudad
+                <input
+                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  placeholder="Ej. Bogotá"
+                  value={leadForm.ciudad}
+                  onChange={(e) => setLeadForm((prev) => ({ ...prev, ciudad: e.target.value }))}
+                />
+              </label>
+            </div>
+          </div>
           <div className="mt-4 flex flex-wrap gap-3">
-            <a href={whatsappLink} target="_blank" rel="noreferrer" className="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">WhatsApp</a>
+            <a href={whatsappLeadLink} target="_blank" rel="noreferrer" className="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">WhatsApp</a>
             <a href={`mailto:${email}`} className="rounded-lg border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-900">{email}</a>
           </div>
         </div>

@@ -139,8 +139,42 @@
               <li>Aplica para empresas y familias con necesidades preventivas o urgentes.</li>
             </ul>
           </div>
+          <div class="mt-4 rounded-xl border border-blue-200 bg-white p-4">
+            <p class="text-sm font-semibold text-blue-900">Formulario corto de precalificación</p>
+            <p class="mt-1 text-xs text-slate-600">Este resumen se enviará automáticamente al abrir WhatsApp.</p>
+            <div class="mt-3 grid gap-3 md:grid-cols-2">
+              <label class="text-sm text-slate-700">
+                Perfil
+                <select id="lead-perfil" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+                  <option>Empresa</option>
+                  <option>Familia</option>
+                </select>
+              </label>
+              <label class="text-sm text-slate-700">
+                Necesidad principal
+                <select id="lead-necesidad" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+                  <option>Prevención legal</option>
+                  <option>Urgencia legal</option>
+                  <option>Revisión contractual</option>
+                  <option>Protección patrimonial</option>
+                </select>
+              </label>
+              <label class="text-sm text-slate-700">
+                Urgencia
+                <select id="lead-urgencia" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm">
+                  <option>Hoy</option>
+                  <option selected>Esta semana</option>
+                  <option>Este mes</option>
+                </select>
+              </label>
+              <label class="text-sm text-slate-700">
+                Ciudad
+                <input id="lead-ciudad" class="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm" placeholder="Ej. Bogotá" />
+              </label>
+            </div>
+          </div>
           <div class="mt-4 flex flex-wrap gap-3">
-            <a href="https://wa.me/573000000000" target="_blank" rel="noreferrer" class="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">WhatsApp</a>
+            <a id="whatsapp-link" href="https://wa.me/573000000000" target="_blank" rel="noreferrer" class="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">WhatsApp</a>
             <a href="mailto:contacto@lexiuridicus.site" class="rounded-lg border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-900">contacto@lexiuridicus.site</a>
           </div>
         </div>
@@ -181,6 +215,30 @@
           status.className = 'mt-4 font-semibold text-red-700';
           status.textContent = 'No se logró cargar los servicios desde el backend.';
         });
+
+      const whatsappBase = 'https://wa.me/573000000000';
+      const perfil = document.getElementById('lead-perfil');
+      const necesidad = document.getElementById('lead-necesidad');
+      const urgencia = document.getElementById('lead-urgencia');
+      const ciudad = document.getElementById('lead-ciudad');
+      const whatsappEl = document.getElementById('whatsapp-link');
+
+      function updateWhatsappLink() {
+        const message = [
+          'Hola, quiero agendar el diagnóstico legal inicial.',
+          `Perfil: ${perfil.value}`,
+          `Necesidad: ${necesidad.value}`,
+          `Urgencia: ${urgencia.value}`,
+          `Ciudad: ${ciudad.value || 'No especificada'}`
+        ].join('\n');
+        whatsappEl.href = `${whatsappBase}?text=${encodeURIComponent(message)}`;
+      }
+
+      [perfil, necesidad, urgencia, ciudad].forEach((field) => {
+        field.addEventListener('input', updateWhatsappLink);
+        field.addEventListener('change', updateWhatsappLink);
+      });
+      updateWhatsappLink();
     </script>
   </body>
 </html>
