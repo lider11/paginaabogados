@@ -60,7 +60,21 @@ app.get('/api/services', (_req, res) => {
   res.json(services);
 });
 
+app.get('/rutas/:slug', (req, res, next) => {
+  const safeSlug = String(req.params.slug || '').replace(/[^a-z-]/gi, '');
+  const routeFile = path.join(__dirname, `../public/rutas/${safeSlug}.html`);
+  if (fs.existsSync(routeFile)) {
+    return res.sendFile(routeFile);
+  }
+  return next();
+});
+
 function renderEmbeddedFallback() {
+  const publicIndex = path.join(__dirname, '../public/index.html');
+  if (fs.existsSync(publicIndex)) {
+    return fs.readFileSync(publicIndex, 'utf8');
+  }
+
   return `
     <!doctype html>
     <html lang="es">
@@ -68,111 +82,173 @@ function renderEmbeddedFallback() {
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Lexiuridicus | Servicios Jurídicos</title>
-        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+          :root { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: #0f172a; background: #f8fafc; }
+          body { margin: 0; background: #f8fafc; color: #0f172a; }
+          .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+          .header { position: sticky; top: 0; background: #fff; border-bottom: 1px solid #e2e8f0; }
+          .nav { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; }
+          .brand { font-weight: 800; color: #1e3a8a; margin: 0; }
+          .hero { margin: 24px 0; border-radius: 18px; padding: 28px; background: linear-gradient(90deg,#0f172a,#1e3a8a); color: #fff; }
+          .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; font-size: 13px; background: rgba(255,255,255,.15); }
+          .offer { margin-top: 10px; display: inline-block; padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.35); font-size: 14px; }
+          .grid { display: grid; gap: 12px; }
+          .grid-3 { grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); }
+          .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; }
+          .section { padding: 20px 0; }
+          h1,h2,h3,p { margin-top: 0; }
+          .muted { color: #475569; }
+        </style>
       </head>
-      <body class="bg-slate-50 text-slate-900">
-        <header class="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
-          <nav class="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
-            <p class="font-bold text-blue-900">Lexiuridicus</p>
-            <div class="hidden gap-5 text-sm text-slate-600 md:flex">
-              <a href="#servicios" class="hover:text-blue-800">Servicios</a>
-              <a href="#metodologia" class="hover:text-blue-800">Metodología</a>
-              <a href="#diferenciales" class="hover:text-blue-800">Diferenciales</a>
-              <a href="#contacto" class="hover:text-blue-800">Contacto</a>
-            </div>
-            <a href="https://wa.me/573000000000" target="_blank" rel="noreferrer" class="rounded-lg bg-blue-900 px-3 py-2 text-xs font-semibold text-white sm:text-sm">Agendar asesoría</a>
+      <body>
+        <header class="header">
+          <nav class="container nav">
+            <p class="brand">Lexiuridicus</p>
           </nav>
         </header>
+        <main class="container">
+          <section class="hero">
+            <span class="pill">Firma legal estratégica</span>
+            <h1>Decisiones jurídicas claras para empresas y familias</h1>
+            <p>Convertimos temas legales complejos en planes accionables, con enfoque preventivo, cumplimiento normativo y visión empresarial.</p>
+            <span class="offer">Diagnóstico legal inicial (30 min) + hoja de ruta priorizada en 48h</span>
+          </section>
 
-        <main>
-          <section class="mx-auto max-w-6xl px-5 pb-10 pt-10">
-            <div class="rounded-3xl bg-gradient-to-r from-slate-900 to-blue-900 p-8 text-white shadow-xl shadow-blue-900/20 sm:p-12">
-              <p class="inline-block rounded-full bg-white/15 px-4 py-1 text-sm font-medium">Firma legal estratégica</p>
-              <h1 class="mt-4 text-4xl font-bold sm:text-5xl">Decisiones jurídicas claras para empresas y familias</h1>
-              <p class="mt-4 max-w-3xl text-blue-100">Convertimos temas legales complejos en planes accionables, con enfoque preventivo, cumplimiento normativo y visión empresarial.</p>
-              <div class="mt-7 flex flex-wrap gap-3">
-                <a href="#contacto" class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-blue-900">Solicitar diagnóstico</a>
-                <a href="#servicios" class="rounded-lg border border-white/50 px-4 py-2 text-sm font-semibold text-white">Conocer servicios</a>
+          <section id="contacto" class="section">
+            <div class="grid grid-3">
+              <article class="card"><strong>+10</strong><p class="muted">Años en asesoría legal corporativa</p></article>
+              <article class="card"><strong>4</strong><p class="muted">Unidades de servicio especializadas</p></article>
+              <article class="card"><strong>24/7</strong><p class="muted">Canales abiertos para respuesta inicial</p></article>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Elige tu ruta según tu perfil</h2>
+            <p class="muted">Segmentamos el diagnóstico para acelerar decisiones según tipo de cliente.</p>
+            <div class="grid grid-3">
+              <article class="card">
+                <strong>Ruta Empresas</strong>
+                <p class="muted">Gobierno corporativo, contingencias y compliance.</p>
+                <a href="/rutas/empresas" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Empresas</a>
+              </article>
+              <article class="card">
+                <strong>Ruta Familias</strong>
+                <p class="muted">Patrimonio, sucesión y protección de activos.</p>
+                <a href="/rutas/familias" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Familias</a>
+              </article>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Servicios legales especializados</h2>
+            <p class="muted">Líneas de trabajo diseñadas para proteger patrimonio, gobierno y crecimiento empresarial.</p>
+            <div class="grid grid-3">
+              <article class="card"><strong>Tradición de Acciones</strong><p class="muted">Asesoría para estructurar y formalizar transferencias con seguridad jurídica.</p></article>
+              <article class="card"><strong>Patrimonio de Familia</strong><p class="muted">Protección legal del patrimonio familiar con acompañamiento en cada etapa.</p></article>
+              <article class="card"><strong>Gobierno Corporativo</strong><p class="muted">Diseño de prácticas de gobierno para fortalecer control y toma de decisiones.</p></article>
+              <article class="card"><strong>Imagen Empresarial</strong><p class="muted">Soporte legal estratégico para construir y proteger la reputación empresarial.</p></article>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Metodología</h2>
+            <div class="grid grid-3">
+              <article class="card"><strong>01. Diagnóstico</strong><p class="muted">Levantamos hechos, riesgos e impacto jurídico.</p></article>
+              <article class="card"><strong>02. Estrategia</strong><p class="muted">Definimos ruta legal, tiempos y documentos críticos.</p></article>
+              <article class="card"><strong>03. Ejecución</strong><p class="muted">Implementamos y damos seguimiento hasta el cierre.</p></article>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Diferenciales</h2>
+            <div class="grid grid-3">
+              <article class="card"><strong>Gobernanza y trazabilidad</strong><p class="muted">Cada caso tiene plan, hitos y evidencia documental.</p></article>
+              <article class="card"><strong>Gestión de riesgos legales</strong><p class="muted">Priorizamos prevención para evitar contingencias y costos innecesarios.</p></article>
+              <article class="card"><strong>Comunicación ejecutiva</strong><p class="muted">Traducimos lenguaje legal a decisiones claras para líderes y equipos.</p></article>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Prueba social y evidencia de resultados</h2>
+            <div class="grid grid-3">
+              <article class="card"><strong>150+</strong><p class="muted">Diagnósticos legales realizados</p></article>
+              <article class="card"><strong>92%</strong><p class="muted">Clientes que continúan a fase de estrategia</p></article>
+              <article class="card"><strong>48h</strong><p class="muted">Tiempo promedio de entrega de hoja de ruta</p></article>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Testimonios breves</h2>
+            <div class="grid grid-3">
+              <blockquote class="card">“En una sesión entendimos riesgos y salimos con prioridades claras para actuar sin improvisar.”</blockquote>
+              <blockquote class="card">“La hoja de ruta en 48 horas nos permitió ordenar decisiones familiares que llevábamos meses aplazando.”</blockquote>
+              <blockquote class="card">“La metodología evitó reprocesos y nos dio seguridad jurídica para negociar con aliados estratégicos.”</blockquote>
+            </div>
+          </section>
+
+          <section class="section">
+            <h2>Solicita una evaluación inicial</h2>
+            <p class="muted">Agenda una reunión y recibe una ruta legal priorizada para tu caso.</p>
+            <div class="card" style="margin-bottom:12px;">
+              <strong>Formulario corto de precalificación</strong>
+              <p class="muted">Este resumen se enviará automáticamente al abrir WhatsApp.</p>
+              <div class="grid grid-3">
+                <label>Perfil
+                  <select id="lead-perfil" style="width:100%;margin-top:6px;padding:8px;border-radius:8px;border:1px solid #cbd5e1;">
+                    <option>Empresa</option>
+                    <option>Familia</option>
+                  </select>
+                </label>
+                <label>Necesidad principal
+                  <select id="lead-necesidad" style="width:100%;margin-top:6px;padding:8px;border-radius:8px;border:1px solid #cbd5e1;">
+                    <option>Prevención legal</option>
+                    <option>Urgencia legal</option>
+                    <option>Revisión contractual</option>
+                    <option>Protección patrimonial</option>
+                  </select>
+                </label>
+                <label>Urgencia
+                  <select id="lead-urgencia" style="width:100%;margin-top:6px;padding:8px;border-radius:8px;border:1px solid #cbd5e1;">
+                    <option>Hoy</option>
+                    <option selected>Esta semana</option>
+                    <option>Este mes</option>
+                  </select>
+                </label>
+                <label>Ciudad
+                  <input id="lead-ciudad" placeholder="Ej. Bogotá" style="width:100%;margin-top:6px;padding:8px;border-radius:8px;border:1px solid #cbd5e1;" />
+                </label>
               </div>
             </div>
-          </section>
-
-          <section class="mx-auto grid max-w-6xl gap-4 px-5 pb-10 sm:grid-cols-3">
-            <div class="rounded-xl border border-slate-200 bg-white p-4 text-center"><p class="text-2xl font-bold text-blue-900">+10</p><p class="text-sm text-slate-600">Años en asesoría legal corporativa</p></div>
-            <div class="rounded-xl border border-slate-200 bg-white p-4 text-center"><p class="text-2xl font-bold text-blue-900">4</p><p class="text-sm text-slate-600">Unidades de servicio especializadas</p></div>
-            <div class="rounded-xl border border-slate-200 bg-white p-4 text-center"><p class="text-2xl font-bold text-blue-900">24/7</p><p class="text-sm text-slate-600">Canales abiertos para respuesta inicial</p></div>
-          </section>
-
-          <section id="servicios" class="mx-auto max-w-6xl px-5 pb-12">
-            <h2 class="text-3xl font-bold text-slate-800">Servicios legales especializados</h2>
-            <p class="mt-1 text-slate-600">Líneas de trabajo diseñadas para proteger patrimonio, gobierno y crecimiento empresarial.</p>
-            <p id="status" class="mt-4 text-slate-600">Cargando servicios...</p>
-            <div id="grid" class="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-4"></div>
-          </section>
-
-          <section id="metodologia" class="border-y border-slate-200 bg-white">
-            <div class="mx-auto grid max-w-6xl gap-6 px-5 py-10 md:grid-cols-3">
-              <div class="rounded-xl bg-slate-50 p-5"><p class="text-sm font-semibold text-blue-700">01. Diagnóstico</p><p class="mt-2 text-sm text-slate-600">Levantamos hechos, riesgos e impacto jurídico.</p></div>
-              <div class="rounded-xl bg-slate-50 p-5"><p class="text-sm font-semibold text-blue-700">02. Estrategia</p><p class="mt-2 text-sm text-slate-600">Definimos ruta legal, tiempos y documentos críticos.</p></div>
-              <div class="rounded-xl bg-slate-50 p-5"><p class="text-sm font-semibold text-blue-700">03. Ejecución</p><p class="mt-2 text-sm text-slate-600">Implementamos y damos seguimiento hasta el cierre.</p></div>
-            </div>
-          </section>
-
-          <section id="diferenciales" class="mx-auto max-w-6xl px-5 py-10">
-            <h2 class="text-2xl font-bold text-slate-800">Buenas prácticas empresariales que aplicamos</h2>
-            <div class="mt-4 grid gap-4 md:grid-cols-2">
-              <div class="rounded-xl border border-slate-200 bg-white p-5"><p class="font-semibold text-slate-800">Gobernanza y trazabilidad</p><p class="mt-2 text-sm text-slate-600">Cada caso tiene plan, hitos y evidencia documental para auditoría y control.</p></div>
-              <div class="rounded-xl border border-slate-200 bg-white p-5"><p class="font-semibold text-slate-800">Gestión de riesgos legales</p><p class="mt-2 text-sm text-slate-600">Priorizamos prevención para evitar contingencias y costos innecesarios.</p></div>
-              <div class="rounded-xl border border-slate-200 bg-white p-5"><p class="font-semibold text-slate-800">Comunicación ejecutiva</p><p class="mt-2 text-sm text-slate-600">Traducimos lenguaje legal a decisiones claras para líderes y equipos.</p></div>
-              <div class="rounded-xl border border-slate-200 bg-white p-5"><p class="font-semibold text-slate-800">Confidencialidad y ética</p><p class="mt-2 text-sm text-slate-600">Protocolos de manejo de información y actuación profesional responsable.</p></div>
-            </div>
-          </section>
-
-          <section id="contacto" class="mx-auto max-w-6xl px-5 pb-12">
-            <div class="rounded-2xl border border-blue-200 bg-blue-50 p-6">
-              <h2 class="text-2xl font-bold text-blue-900">Solicita una evaluación inicial</h2>
-              <p class="mt-2 text-slate-700">Agenda una reunión y recibe una ruta legal priorizada para tu caso.</p>
-              <div class="mt-4 flex flex-wrap gap-3">
-                <a href="https://wa.me/573000000000" target="_blank" rel="noreferrer" class="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">WhatsApp</a>
-                <a href="mailto:contacto@lexiuridicus.site" class="rounded-lg border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-900">contacto@lexiuridicus.site</a>
-              </div>
+            <div class="grid grid-3">
+              <a id="whatsapp-link" class="card" href="https://wa.me/573000000000" target="_blank" rel="noreferrer"><strong>WhatsApp</strong><p class="muted">Agendar asesoría inmediata</p></a>
+              <a class="card" href="mailto:contacto@lexiuridicus.site"><strong>Email</strong><p class="muted">contacto@lexiuridicus.site</p></a>
             </div>
           </section>
         </main>
-
         <script>
-          const icons = {
-            'Tradición de Acciones': '📄',
-            'Patrimonio de Familia': '🏡',
-            'Gobierno Corporativo': '🏛️',
-            'Imagen Empresarial': '✨'
-          };
+          const whatsappBase = 'https://wa.me/573000000000';
+          const perfil = document.getElementById('lead-perfil');
+          const necesidad = document.getElementById('lead-necesidad');
+          const urgencia = document.getElementById('lead-urgencia');
+          const ciudad = document.getElementById('lead-ciudad');
+          const whatsappEl = document.getElementById('whatsapp-link');
 
-          fetch('/api/services')
-            .then((res) => {
-              if (!res.ok) throw new Error('Error de API');
-              return res.json();
-            })
-            .then((list) => {
-              const grid = document.getElementById('grid');
-              const status = document.getElementById('status');
-              status.remove();
+          function updateWhatsappLink() {
+            const message = [
+              'Hola, quiero agendar el diagnóstico legal inicial.',
+              'Perfil: ' + perfil.value,
+              'Necesidad: ' + necesidad.value,
+              'Urgencia: ' + urgencia.value,
+              'Ciudad: ' + (ciudad.value || 'No especificada')
+            ].join('\\n');
+            whatsappEl.href = whatsappBase + '?text=' + encodeURIComponent(message);
+          }
 
-              list.forEach((service) => {
-                const article = document.createElement('article');
-                article.className = 'rounded-2xl border border-slate-200 bg-white p-5 shadow-md shadow-slate-900/5 transition hover:-translate-y-1 hover:shadow-lg';
-                article.innerHTML =
-                  '<span class="text-3xl">' + (icons[service.title] || '⚖️') + '</span>' +
-                  '<h3 class="mt-3 text-lg font-semibold text-blue-800">' + service.title + '</h3>' +
-                  '<p class="mt-2 text-sm leading-relaxed text-slate-600">' + service.description + '</p>';
-                grid.appendChild(article);
-              });
-            })
-            .catch(() => {
-              const status = document.getElementById('status');
-              status.className = 'mt-4 font-semibold text-red-700';
-              status.textContent = 'No se logró cargar los servicios desde el backend.';
-            });
+          [perfil, necesidad, urgencia, ciudad].forEach((field) => {
+            field.addEventListener('input', updateWhatsappLink);
+            field.addEventListener('change', updateWhatsappLink);
+          });
+          updateWhatsappLink();
         </script>
       </body>
     </html>
