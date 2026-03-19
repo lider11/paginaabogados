@@ -95,6 +95,7 @@ function renderEmbeddedFallback() {
         <header class="header">
           <nav class="container nav">
             <p class="brand">Lexiuridicus</p>
+            <a href="#rutas" style="font-size:14px;font-weight:600;color:#1e3a8a;text-decoration:underline;">Ver rutas</a>
           </nav>
         </header>
         <main class="container">

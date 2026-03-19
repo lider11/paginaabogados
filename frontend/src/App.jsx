@@ -161,6 +161,9 @@ function App() {
           <a href={whatsappLink} target="_blank" rel="noreferrer" className="rounded-lg bg-blue-900 px-3 py-2 text-xs font-semibold text-white sm:text-sm">
             Agendar asesoría
           </a>
+          <a href="#rutas" className="ml-2 text-xs font-semibold text-blue-900 underline underline-offset-2 sm:text-sm">
+            Ver rutas
+          </a>
         </nav>
       </header>
 
