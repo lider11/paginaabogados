@@ -55,6 +55,28 @@ const serviceIcons = {
   'Gobierno Corporativo': '🏛️',
   'Imagen Empresarial': '✨'
 };
+const fallbackServices = [
+  {
+    id: 'fallback-1',
+    title: 'Tradición de Acciones',
+    description: 'Asesoría integral para estructurar y formalizar la transferencia de acciones con seguridad jurídica y cumplimiento normativo.'
+  },
+  {
+    id: 'fallback-2',
+    title: 'Patrimonio de Familia',
+    description: 'Protección legal del patrimonio familiar mediante figuras jurídicas adecuadas y acompañamiento en cada etapa del proceso.'
+  },
+  {
+    id: 'fallback-3',
+    title: 'Gobierno Corporativo',
+    description: 'Diseño e implementación de prácticas de gobierno corporativo para fortalecer la transparencia, el control y la toma de decisiones.'
+  },
+  {
+    id: 'fallback-4',
+    title: 'Imagen Empresarial',
+    description: 'Soporte legal estratégico para la construcción y protección de la imagen empresarial frente a clientes, aliados y mercado.'
+  }
+];
 
 function App() {
   const [services, setServices] = useState([]);
@@ -89,7 +111,8 @@ function App() {
         setLoading(false);
       })
       .catch(() => {
-        setError('No se logró conectar con el backend de Lexiuridicus.');
+        setServices(fallbackServices);
+        setError('Mostramos nuestro catálogo base mientras restablecemos la conexión.');
         setLoading(false);
       });
   }, []);
@@ -140,7 +163,7 @@ function App() {
         <h2 className="text-3xl font-bold text-slate-800">Servicios legales especializados</h2>
         <p className="mt-1 text-slate-600">Líneas de trabajo diseñadas para proteger patrimonio, gobierno y crecimiento empresarial.</p>
         {loading && <p className="mt-4 text-slate-600">Cargando servicios...</p>}
-        {error && <p className="mt-4 font-semibold text-red-700">{error}</p>}
+        {error && <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">{error}</p>}
 
         <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {services.map((service) => (
