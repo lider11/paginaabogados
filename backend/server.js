@@ -70,14 +70,6 @@ function tryServeRoutePage(slug, res, next) {
   return next();
 }
 
-app.get('/rutas/:slug.html', (req, res, next) => {
-  return tryServeRoutePage(req.params.slug, res, next);
-});
-
-app.get('/rutas/:slug', (req, res, next) => {
-  return tryServeRoutePage(req.params.slug, res, next);
-});
-
 function renderEmbeddedFallback() {
   const publicIndex = path.join(__dirname, '../public/index.html');
   if (fs.existsSync(publicIndex)) {
