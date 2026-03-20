@@ -67,43 +67,6 @@ function tryServeRoutePage(slug, res, next) {
   if (fs.existsSync(routeFile)) {
     return res.sendFile(routeFile);
   }
-  if (safeSlug === 'empresas' || safeSlug === 'familias') {
-    const isEmpresa = safeSlug === 'empresas';
-    return res.status(200).send(`
-      <!doctype html>
-      <html lang="es">
-        <head>
-          <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>${isEmpresa ? 'Ruta Empresas' : 'Ruta Familias'} | Lexiuridicus</title>
-          <style>
-            body{margin:0;font-family:Inter,Arial,sans-serif;background:#f8fafc;color:#0f172a}
-            .wrap{max-width:980px;margin:0 auto;padding:32px 20px}
-            .hero{background:linear-gradient(90deg,#0f172a,#1e3a8a);color:#fff;border-radius:16px;padding:24px}
-            .card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px}
-            .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-            .btn{display:inline-block;margin-top:10px;padding:10px 14px;border-radius:10px;background:#1e3a8a;color:#fff;text-decoration:none;font-weight:600}
-            .back{display:inline-block;margin-bottom:14px;padding:8px 12px;border:1px solid #cbd5e1;border-radius:10px;color:#334155;text-decoration:none;font-weight:600}
-          </style>
-        </head>
-        <body>
-          <main class="wrap">
-            <a class="back" href="/">← Regresar al inicio</a>
-            <section class="hero">
-              <h1>${isEmpresa ? 'Ruta Empresas: gobierno corporativo, contingencias y compliance' : 'Ruta Familias: patrimonio, sucesión y protección de activos'}</h1>
-              <p>${isEmpresa ? 'Ruta diseñada para empresas que buscan orden legal, reducción de riesgo contractual y control de cumplimiento.' : 'Ruta diseñada para familias que buscan proteger patrimonio y ordenar decisiones sucesorales con claridad.'}</p>
-            </section>
-            <section class="grid" style="margin-top:16px">
-              <article class="card"><strong>${isEmpresa ? '1. Orden societario' : '1. Protección patrimonial'}</strong></article>
-              <article class="card"><strong>${isEmpresa ? '2. Riesgo contractual' : '2. Ruta sucesoral'}</strong></article>
-              <article class="card"><strong>${isEmpresa ? '3. Cumplimiento preventivo' : '3. Protocolo familiar'}</strong></article>
-            </section>
-            <a class="btn" href="/#contacto">${isEmpresa ? 'Solicitar diagnóstico para empresas' : 'Solicitar diagnóstico para familias'}</a>
-          </main>
-        </body>
-      </html>
-    `);
-  }
   return next();
 }
 
@@ -144,6 +107,9 @@ function renderEmbeddedFallback() {
           .section { padding: 20px 0; }
           h1,h2,h3,p { margin-top: 0; }
           .muted { color: #475569; }
+          .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 50; display: flex; flex-direction: column; gap: 10px; }
+          .toast { background: #1e3a8a; color: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); font-size: 14px; font-weight: 500; animation: slide-up 0.4s forwards; }
+          @keyframes slide-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         </style>
       </head>
       <body>
@@ -175,12 +141,12 @@ function renderEmbeddedFallback() {
               <article class="card">
                 <strong>Ruta Empresas</strong>
                 <p class="muted">Gobierno corporativo, contingencias y compliance.</p>
-                <a href="/rutas/empresas.html" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Empresas</a>
+                <a href="#" class="ruta-btn" data-ruta="empresa" data-name="Empresas" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Empresas</a>
               </article>
               <article class="card">
                 <strong>Ruta Familias</strong>
                 <p class="muted">Patrimonio, sucesión y protección de activos.</p>
-                <a href="/rutas/familias.html" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Familias</a>
+                <a href="#" class="ruta-btn" data-ruta="familia" data-name="Familias" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Familias</a>
               </article>
             </div>
           </section>
@@ -280,6 +246,7 @@ function renderEmbeddedFallback() {
             </div>
           </section>
         </main>
+        <div id="toast-root"></div>
         <script>
           const whatsappBase = 'https://wa.me/573000000000';
           const perfil = document.getElementById('lead-perfil');
@@ -287,6 +254,35 @@ function renderEmbeddedFallback() {
           const urgencia = document.getElementById('lead-urgencia');
           const ciudad = document.getElementById('lead-ciudad');
           const whatsappEl = document.getElementById('whatsapp-link');
+          const toastRoot = document.getElementById('toast-root');
+
+          function saveState() {
+            const state = {
+              perfil: perfil.value,
+              necesidad: necesidad.value,
+              urgencia: urgencia.value,
+              ciudad: ciudad.value
+            };
+            sessionStorage.setItem('lexiuridicus_leadForm', JSON.stringify(state));
+          }
+
+          function loadState() {
+            try {
+              const saved = sessionStorage.getItem('lexiuridicus_leadForm');
+              if (saved) {
+                const state = JSON.parse(saved);
+                if (state.perfil) perfil.value = state.perfil;
+                if (state.necesidad) necesidad.value = state.necesidad;
+                if (state.urgencia) urgencia.value = state.urgencia;
+                if (state.ciudad) ciudad.value = state.ciudad;
+              }
+            } catch(e) {}
+          }
+
+          function showToast(message) {
+            toastRoot.innerHTML = '<div class="toast-container"><div class="toast">' + message + '</div></div>';
+            setTimeout(() => { toastRoot.innerHTML = ''; }, 3000);
+          }
 
           function updateWhatsappLink() {
             const message = [
@@ -300,9 +296,36 @@ function renderEmbeddedFallback() {
           }
 
           [perfil, necesidad, urgencia, ciudad].forEach((field) => {
-            field.addEventListener('input', updateWhatsappLink);
-            field.addEventListener('change', updateWhatsappLink);
+            field.addEventListener('input', () => { updateWhatsappLink(); saveState(); });
+            field.addEventListener('change', () => { updateWhatsappLink(); saveState(); });
           });
+
+          document.querySelectorAll('.ruta-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              const rutaId = btn.getAttribute('data-ruta');
+              const rutaName = btn.getAttribute('data-name');
+              const isEmpresa = rutaId === 'empresa';
+              
+              perfil.value = isEmpresa ? 'Empresa' : 'Familia';
+              necesidad.value = isEmpresa ? 'Prevención legal' : 'Protección patrimonial';
+              
+              updateWhatsappLink();
+              saveState();
+              showToast('Ruta ' + rutaName + ' aplicada. Deslizando al formulario...');
+              
+              if (window.gtag) gtag('event', 'select_route', { route_name: rutaName });
+              
+              const contacto = document.getElementById('contacto');
+              if (contacto) contacto.scrollIntoView({ behavior: 'smooth' });
+            });
+          });
+
+          whatsappEl.addEventListener('click', () => {
+            if (window.gtag) gtag('event', 'click_whatsapp', { lead_perfil: perfil.value });
+          });
+
+          loadState();
           updateWhatsappLink();
         </script>
       </body>
