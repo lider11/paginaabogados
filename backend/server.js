@@ -67,6 +67,43 @@ function tryServeRoutePage(slug, res, next) {
   if (fs.existsSync(routeFile)) {
     return res.sendFile(routeFile);
   }
+  if (safeSlug === 'empresas' || safeSlug === 'familias') {
+    const isEmpresa = safeSlug === 'empresas';
+    return res.status(200).send(`
+      <!doctype html>
+      <html lang="es">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>${isEmpresa ? 'Ruta Empresas' : 'Ruta Familias'} | Lexiuridicus</title>
+          <style>
+            body{margin:0;font-family:Inter,Arial,sans-serif;background:#f8fafc;color:#0f172a}
+            .wrap{max-width:980px;margin:0 auto;padding:32px 20px}
+            .hero{background:linear-gradient(90deg,#0f172a,#1e3a8a);color:#fff;border-radius:16px;padding:24px}
+            .card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:14px}
+            .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+            .btn{display:inline-block;margin-top:10px;padding:10px 14px;border-radius:10px;background:#1e3a8a;color:#fff;text-decoration:none;font-weight:600}
+            .back{display:inline-block;margin-bottom:14px;padding:8px 12px;border:1px solid #cbd5e1;border-radius:10px;color:#334155;text-decoration:none;font-weight:600}
+          </style>
+        </head>
+        <body>
+          <main class="wrap">
+            <a class="back" href="/">← Regresar al inicio</a>
+            <section class="hero">
+              <h1>${isEmpresa ? 'Ruta Empresas: gobierno corporativo, contingencias y compliance' : 'Ruta Familias: patrimonio, sucesión y protección de activos'}</h1>
+              <p>${isEmpresa ? 'Ruta diseñada para empresas que buscan orden legal, reducción de riesgo contractual y control de cumplimiento.' : 'Ruta diseñada para familias que buscan proteger patrimonio y ordenar decisiones sucesorales con claridad.'}</p>
+            </section>
+            <section class="grid" style="margin-top:16px">
+              <article class="card"><strong>${isEmpresa ? '1. Orden societario' : '1. Protección patrimonial'}</strong></article>
+              <article class="card"><strong>${isEmpresa ? '2. Riesgo contractual' : '2. Ruta sucesoral'}</strong></article>
+              <article class="card"><strong>${isEmpresa ? '3. Cumplimiento preventivo' : '3. Protocolo familiar'}</strong></article>
+            </section>
+            <a class="btn" href="/#contacto">${isEmpresa ? 'Solicitar diagnóstico para empresas' : 'Solicitar diagnóstico para familias'}</a>
+          </main>
+        </body>
+      </html>
+    `);
+  }
   return next();
 }
 
