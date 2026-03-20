@@ -175,12 +175,12 @@ function renderEmbeddedFallback() {
               <article class="card">
                 <strong>Ruta Empresas</strong>
                 <p class="muted">Gobierno corporativo, contingencias y compliance.</p>
-                <a href="/rutas/empresas.html" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Empresas</a>
+                <a href="/rutas/empresas.html" data-route="empresa" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Empresas</a>
               </article>
               <article class="card">
                 <strong>Ruta Familias</strong>
                 <p class="muted">Patrimonio, sucesión y protección de activos.</p>
-                <a href="/rutas/familias.html" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Familias</a>
+                <a href="/rutas/familias.html" data-route="familia" style="display:inline-block;margin-top:8px;padding:8px 10px;border-radius:8px;background:#1e3a8a;color:#fff;text-decoration:none;">Iniciar Ruta Familias</a>
               </article>
             </div>
           </section>
@@ -276,11 +276,19 @@ function renderEmbeddedFallback() {
             </div>
             <div class="grid grid-3">
               <a id="whatsapp-link" class="card" href="https://wa.me/573000000000" target="_blank" rel="noreferrer"><strong>WhatsApp</strong><p class="muted">Agendar asesoría inmediata</p></a>
-              <a class="card" href="mailto:contacto@lexiuridicus.site"><strong>Email</strong><p class="muted">contacto@lexiuridicus.site</p></a>
+              <a id="email-link" class="card" href="mailto:contacto@lexiuridicus.site"><strong>Email</strong><p class="muted">contacto@lexiuridicus.site</p></a>
             </div>
           </section>
         </main>
         <script>
+          function trackEvent(event, payload = {}) {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              event,
+              ts: new Date().toISOString(),
+              ...payload
+            });
+          }
           const whatsappBase = 'https://wa.me/573000000000';
           const perfil = document.getElementById('lead-perfil');
           const necesidad = document.getElementById('lead-necesidad');
@@ -304,6 +312,18 @@ function renderEmbeddedFallback() {
             field.addEventListener('change', updateWhatsappLink);
           });
           updateWhatsappLink();
+
+          document.querySelectorAll('[data-route]').forEach((routeLink) => {
+            routeLink.addEventListener('click', () => {
+              trackEvent('route_selected', { route_id: routeLink.getAttribute('data-route') });
+            });
+          });
+          whatsappEl.addEventListener('click', () => {
+            trackEvent('whatsapp_opened', { perfil: perfil.value, necesidad: necesidad.value, urgencia: urgencia.value });
+          });
+          document.getElementById('email-link').addEventListener('click', () => {
+            trackEvent('email_clicked', { perfil: perfil.value });
+          });
         </script>
       </body>
     </html>

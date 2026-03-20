@@ -55,7 +55,7 @@
               <li>Riesgos contractuales</li>
               <li>Decisiones con trazabilidad</li>
             </ul>
-            <a href="/rutas/empresas.html" class="mt-4 inline-block rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">Iniciar Ruta Empresas</a>
+            <a href="/rutas/empresas.html" data-route="empresa" class="mt-4 inline-block rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">Iniciar Ruta Empresas</a>
           </article>
           <article class="rounded-xl border border-slate-200 bg-white p-5">
             <p class="text-lg font-semibold text-blue-900">Ruta Familias</p>
@@ -65,7 +65,7 @@
               <li>Documentación crítica</li>
               <li>Plan de continuidad familiar</li>
             </ul>
-            <a href="/rutas/familias.html" class="mt-4 inline-block rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">Iniciar Ruta Familias</a>
+            <a href="/rutas/familias.html" data-route="familia" class="mt-4 inline-block rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">Iniciar Ruta Familias</a>
           </article>
         </div>
       </section>
@@ -230,7 +230,7 @@
           </div>
           <div class="mt-4 flex flex-wrap gap-3">
             <a id="whatsapp-link" href="https://wa.me/573000000000" target="_blank" rel="noreferrer" class="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">WhatsApp</a>
-            <a href="mailto:contacto@lexiuridicus.site" class="rounded-lg border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-900">contacto@lexiuridicus.site</a>
+            <a id="email-link" href="mailto:contacto@lexiuridicus.site" class="rounded-lg border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-900">contacto@lexiuridicus.site</a>
           </div>
         </div>
       </section>
@@ -243,6 +243,14 @@
         'Gobierno Corporativo': '🏛️',
         'Imagen Empresarial': '✨'
       };
+      function trackEvent(event, payload = {}) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event,
+          ts: new Date().toISOString(),
+          ...payload
+        });
+      }
       const fallbackServices = [
         {
           title: 'Tradición de Acciones',
@@ -285,12 +293,14 @@
           return res.json();
         })
         .then((services) => {
+          trackEvent('services_loaded', { source: 'api', count: services.length });
           renderServices(services);
         })
         .catch(() => {
           const status = document.getElementById('status');
           status.className = 'mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800';
           status.textContent = 'Mostramos nuestro catálogo base mientras restablecemos la conexión.';
+          trackEvent('services_loaded', { source: 'fallback', count: fallbackServices.length });
           renderServices(fallbackServices);
         });
 
@@ -317,6 +327,18 @@
         field.addEventListener('change', updateWhatsappLink);
       });
       updateWhatsappLink();
+
+      document.querySelectorAll('[data-route]').forEach((routeLink) => {
+        routeLink.addEventListener('click', () => {
+          trackEvent('route_selected', { route_id: routeLink.getAttribute('data-route') });
+        });
+      });
+      whatsappEl.addEventListener('click', () => {
+        trackEvent('whatsapp_opened', { perfil: perfil.value, necesidad: necesidad.value, urgencia: urgencia.value });
+      });
+      document.getElementById('email-link').addEventListener('click', () => {
+        trackEvent('email_clicked', { perfil: perfil.value });
+      });
     </script>
   </body>
 </html>

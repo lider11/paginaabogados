@@ -115,6 +115,15 @@ function App() {
     ].join('\n')
   );
   const whatsappLeadLink = `${whatsappLink}?text=${whatsappPrefill}`;
+  const trackEvent = (event, payload = {}) => {
+    if (typeof window === 'undefined') return;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event,
+      ts: new Date().toISOString(),
+      ...payload
+    });
+  };
 
   useEffect(() => {
     fetch(API_URL)
@@ -124,11 +133,13 @@ function App() {
       })
       .then((data) => {
         setServices(data);
+        trackEvent('services_loaded', { source: 'api', count: data.length });
         setLoading(false);
       })
       .catch(() => {
         setServices(fallbackServices);
         setError('Mostramos nuestro catálogo base mientras restablecemos la conexión.');
+        trackEvent('services_loaded', { source: 'fallback', count: fallbackServices.length });
         setLoading(false);
       });
   }, []);
@@ -190,7 +201,11 @@ function App() {
               <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
                 {route.highlights.map((item) => <li key={item}>{item}</li>)}
               </ul>
-              <a href={route.href} className="mt-4 inline-block rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">
+              <a
+                href={route.href}
+                onClick={() => trackEvent('route_selected', { route_id: route.id, route_title: route.title })}
+                className="mt-4 inline-block rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white"
+              >
                 Iniciar {route.title}
               </a>
             </article>
@@ -372,8 +387,22 @@ function App() {
             </div>
           </div>
           <div className="mt-4 flex flex-wrap gap-3">
-            <a href={whatsappLeadLink} target="_blank" rel="noreferrer" className="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">WhatsApp</a>
-            <a href={`mailto:${email}`} className="rounded-lg border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-900">{email}</a>
+            <a
+              href={whatsappLeadLink}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackEvent('whatsapp_opened', { perfil: leadForm.perfil, necesidad: leadForm.necesidad, urgencia: leadForm.urgencia })}
+              className="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white"
+            >
+              WhatsApp
+            </a>
+            <a
+              href={`mailto:${email}`}
+              onClick={() => trackEvent('email_clicked', { perfil: leadForm.perfil })}
+              className="rounded-lg border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-900"
+            >
+              {email}
+            </a>
           </div>
         </div>
       </section>
