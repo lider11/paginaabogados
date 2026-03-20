@@ -3,6 +3,51 @@ import { useEffect, useState } from 'react';
 const API_URL = '/api/services';
 const whatsappLink = 'https://wa.me/573000000000';
 const email = 'contacto@lexiuridicus.site';
+const diagnosticOffer = 'Diagnóstico legal inicial (30 min) + hoja de ruta priorizada en 48h';
+const socialProofStats = [
+  { value: '150+', label: 'Diagnósticos legales realizados' },
+  { value: '92%', label: 'Clientes que continúan a fase de estrategia' },
+  { value: '48h', label: 'Tiempo promedio de entrega de hoja de ruta' }
+];
+
+const successCases = [
+  {
+    title: 'PyME de servicios B2B',
+    challenge: 'Riesgo contractual y cobros atrasados que impactaban flujo de caja.',
+    action: 'Estandarización contractual + protocolo de negociación y soporte de cobranza.',
+    result: 'Disminución de disputas y mejora de recuperación de cartera en 90 días.'
+  },
+  {
+    title: 'Empresa familiar en expansión',
+    challenge: 'Decisiones sin trazabilidad en junta y conflictos entre socios.',
+    action: 'Implementación de reglas de gobierno corporativo y actas estructuradas.',
+    result: 'Mayor claridad de roles y reducción de fricción en decisiones estratégicas.'
+  },
+  {
+    title: 'Familia con patrimonio inmobiliario',
+    challenge: 'Exposición por falta de estructura sucesoral y protección de activos.',
+    action: 'Diseño de ruta patrimonial con priorización documental y cronograma legal.',
+    result: 'Patrimonio organizado, riesgos mitigados y plan de continuidad definido.'
+  }
+];
+
+const testimonials = [
+  {
+    quote: 'En una sesión entendimos riesgos y salimos con prioridades claras para actuar sin improvisar.',
+    author: 'Gerente General',
+    company: 'Comercializadora regional'
+  },
+  {
+    quote: 'La hoja de ruta en 48 horas nos permitió ordenar decisiones familiares que llevábamos meses aplazando.',
+    author: 'Representante de familia',
+    company: 'Bogotá'
+  },
+  {
+    quote: 'La metodología evitó reprocesos y nos dio seguridad jurídica para negociar con aliados estratégicos.',
+    author: 'Directora Administrativa',
+    company: 'PyME de servicios'
+  }
+];
 
 const serviceIcons = {
   'Tradición de Acciones': '📄',
@@ -10,11 +55,75 @@ const serviceIcons = {
   'Gobierno Corporativo': '🏛️',
   'Imagen Empresarial': '✨'
 };
+const fallbackServices = [
+  {
+    id: 'fallback-1',
+    title: 'Tradición de Acciones',
+    description: 'Asesoría integral para estructurar y formalizar la transferencia de acciones con seguridad jurídica y cumplimiento normativo.'
+  },
+  {
+    id: 'fallback-2',
+    title: 'Patrimonio de Familia',
+    description: 'Protección legal del patrimonio familiar mediante figuras jurídicas adecuadas y acompañamiento en cada etapa del proceso.'
+  },
+  {
+    id: 'fallback-3',
+    title: 'Gobierno Corporativo',
+    description: 'Diseño e implementación de prácticas de gobierno corporativo para fortalecer la transparencia, el control y la toma de decisiones.'
+  },
+  {
+    id: 'fallback-4',
+    title: 'Imagen Empresarial',
+    description: 'Soporte legal estratégico para la construcción y protección de la imagen empresarial frente a clientes, aliados y mercado.'
+  }
+];
+const icpRoutes = [
+  {
+    id: 'empresa',
+    title: 'Ruta Empresas',
+    href: '/rutas/empresas.html',
+    subtitle: 'Gobierno corporativo, contingencias y compliance',
+    highlights: ['Orden societario y actas', 'Riesgos contractuales', 'Decisiones con trazabilidad']
+  },
+  {
+    id: 'familia',
+    title: 'Ruta Familias',
+    href: '/rutas/familias.html',
+    subtitle: 'Patrimonio, sucesión y protección de activos',
+    highlights: ['Estructura patrimonial', 'Documentación crítica', 'Plan de continuidad familiar']
+  }
+];
 
 function App() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [leadForm, setLeadForm] = useState({
+    perfil: 'Empresa',
+    necesidad: 'Prevención legal',
+    urgencia: 'Esta semana',
+    ciudad: ''
+  });
+
+  const whatsappPrefill = encodeURIComponent(
+    [
+      'Hola, quiero agendar el diagnóstico legal inicial.',
+      `Perfil: ${leadForm.perfil}`,
+      `Necesidad: ${leadForm.necesidad}`,
+      `Urgencia: ${leadForm.urgencia}`,
+      `Ciudad: ${leadForm.ciudad || 'No especificada'}`
+    ].join('\n')
+  );
+  const whatsappLeadLink = `${whatsappLink}?text=${whatsappPrefill}`;
+  const trackEvent = (event, payload = {}) => {
+    if (typeof window === 'undefined') return;
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event,
+      ts: new Date().toISOString(),
+      ...payload
+    });
+  };
 
   useEffect(() => {
     fetch(API_URL)
@@ -24,10 +133,13 @@ function App() {
       })
       .then((data) => {
         setServices(data);
+        trackEvent('services_loaded', { source: 'api', count: data.length });
         setLoading(false);
       })
       .catch(() => {
-        setError('No se logró conectar con el backend de Lexiuridicus.');
+        setServices(fallbackServices);
+        setError('Mostramos nuestro catálogo base mientras restablecemos la conexión.');
+        trackEvent('services_loaded', { source: 'fallback', count: fallbackServices.length });
         setLoading(false);
       });
   }, []);
@@ -41,6 +153,8 @@ function App() {
             <a href="#servicios" className="hover:text-blue-800">Servicios</a>
             <a href="#metodologia" className="hover:text-blue-800">Metodología</a>
             <a href="#diferenciales" className="hover:text-blue-800">Diferenciales</a>
+            <a href="#rutas" className="hover:text-blue-800">Rutas</a>
+            <a href="#testimonios" className="hover:text-blue-800">Testimonios</a>
             <a href="#contacto" className="hover:text-blue-800">Contacto</a>
           </div>
           <a href={whatsappLink} target="_blank" rel="noreferrer" className="rounded-lg bg-blue-900 px-3 py-2 text-xs font-semibold text-white sm:text-sm">
@@ -57,6 +171,9 @@ function App() {
             Convertimos temas legales complejos en planes accionables, con enfoque preventivo,
             cumplimiento normativo y visión empresarial.
           </p>
+          <p className="mt-4 inline-flex rounded-full border border-white/30 bg-white/10 px-4 py-2 text-sm font-medium text-white">
+            {diagnosticOffer}
+          </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <a href="#contacto" className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-blue-900">Solicitar diagnóstico</a>
             <a href="#servicios" className="rounded-lg border border-white/50 px-4 py-2 text-sm font-semibold text-white">Conocer servicios</a>
@@ -70,11 +187,34 @@ function App() {
         <div className="rounded-xl border border-slate-200 bg-white p-4 text-center"><p className="text-2xl font-bold text-blue-900">24/7</p><p className="text-sm text-slate-600">Canales abiertos para respuesta inicial</p></div>
       </section>
 
+      <section id="rutas" className="mx-auto max-w-6xl px-5 pb-10">
+        <h2 className="text-2xl font-bold text-slate-800">Elige tu ruta según tu perfil</h2>
+        <p className="mt-1 text-slate-600">Segmentamos el diagnóstico para acelerar decisiones según tipo de cliente.</p>
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          {icpRoutes.map((route) => (
+            <article key={route.id} className="rounded-xl border border-slate-200 bg-white p-5">
+              <p className="text-lg font-semibold text-blue-900">{route.title}</p>
+              <p className="mt-1 text-sm text-slate-600">{route.subtitle}</p>
+              <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                {route.highlights.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+              <a
+                href={route.href}
+                onClick={() => trackEvent('route_selected', { route_id: route.id, route_title: route.title })}
+                className="mt-4 inline-block rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white"
+              >
+                Iniciar {route.title}
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section id="servicios" className="mx-auto max-w-6xl px-5 pb-12">
         <h2 className="text-3xl font-bold text-slate-800">Servicios legales especializados</h2>
         <p className="mt-1 text-slate-600">Líneas de trabajo diseñadas para proteger patrimonio, gobierno y crecimiento empresarial.</p>
         {loading && <p className="mt-4 text-slate-600">Cargando servicios...</p>}
-        {error && <p className="mt-4 font-semibold text-red-700">{error}</p>}
+        {error && <p className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">{error}</p>}
 
         <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {services.map((service) => (
@@ -105,13 +245,161 @@ function App() {
         </div>
       </section>
 
+      <section id="evidencia" className="border-y border-slate-200 bg-white">
+        <div className="mx-auto max-w-6xl px-5 py-10">
+          <h2 className="text-2xl font-bold text-slate-800">Prueba social y evidencia de resultados</h2>
+          <p className="mt-2 max-w-3xl text-sm text-slate-600">
+            Compartimos indicadores, casos y testimonios para que evalúes nuestra forma de trabajo con evidencia.
+          </p>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            {socialProofStats.map((item) => (
+              <div key={item.label} className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-center">
+                <p className="text-2xl font-bold text-blue-900">{item.value}</p>
+                <p className="mt-1 text-sm text-slate-600">{item.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8">
+            <h3 className="text-lg font-semibold text-slate-800">Casos representativos</h3>
+            <div className="mt-3 grid gap-4 md:grid-cols-3">
+              {successCases.map((item) => (
+                <article key={item.title} className="rounded-xl border border-slate-200 bg-white p-4">
+                  <p className="text-sm font-semibold text-blue-800">{item.title}</p>
+                  <p className="mt-2 text-sm text-slate-600"><strong>Problema:</strong> {item.challenge}</p>
+                  <p className="mt-2 text-sm text-slate-600"><strong>Intervención:</strong> {item.action}</p>
+                  <p className="mt-2 text-sm text-slate-700"><strong>Resultado:</strong> {item.result}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="testimonios" className="mx-auto max-w-6xl px-5 py-10">
+        <h2 className="text-2xl font-bold text-slate-800">Testimonios breves</h2>
+        <p className="mt-2 max-w-3xl text-sm text-slate-600">
+          Historias cortas de clientes que validan el valor del diagnóstico inicial y la ejecución estratégica.
+        </p>
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
+          {testimonials.map((item) => (
+            <blockquote key={item.quote} className="rounded-xl border border-blue-100 bg-blue-50 p-4">
+              <p className="text-sm italic text-slate-700">“{item.quote}”</p>
+              <footer className="mt-3 text-xs font-semibold text-blue-900">{item.author} · {item.company}</footer>
+            </blockquote>
+          ))}
+        </div>
+      </section>
+
+      <section id="nurturing" className="border-y border-slate-200 bg-white">
+        <div className="mx-auto max-w-6xl px-5 py-10">
+          <h2 className="text-2xl font-bold text-slate-800">Secuencia de acompañamiento (nurturing)</h2>
+          <p className="mt-2 max-w-3xl text-sm text-slate-600">
+            Después del primer contacto, activamos una secuencia breve para ayudarte a tomar decisiones con más contexto y menos fricción.
+          </p>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <article className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+              <p className="text-xs font-semibold text-blue-700">Día 0 · Confirmación</p>
+              <h3 className="mt-1 font-semibold text-slate-800">Resumen de tu caso</h3>
+              <p className="mt-2 text-sm text-slate-600">Te enviamos por WhatsApp un resumen de perfil, urgencia y siguiente paso recomendado.</p>
+            </article>
+            <article className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+              <p className="text-xs font-semibold text-blue-700">Día 1 · Educación</p>
+              <h3 className="mt-1 font-semibold text-slate-800">Checklist de riesgos</h3>
+              <p className="mt-2 text-sm text-slate-600">Recibes una guía corta con documentos críticos, riesgos frecuentes y prioridades por ruta.</p>
+            </article>
+            <article className="rounded-xl border border-slate-200 bg-slate-50 p-5">
+              <p className="text-xs font-semibold text-blue-700">Día 3 · Conversión</p>
+              <h3 className="mt-1 font-semibold text-slate-800">Invitación a agenda</h3>
+              <p className="mt-2 text-sm text-slate-600">Cerramos con llamada a agendar diagnóstico y propuesta de plan de acción inicial.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section id="contacto" className="mx-auto max-w-6xl px-5 pb-12">
         <div className="rounded-2xl border border-blue-200 bg-blue-50 p-6">
           <h2 className="text-2xl font-bold text-blue-900">Solicita una evaluación inicial</h2>
           <p className="mt-2 text-slate-700">Agenda una reunión y recibe una ruta legal priorizada para tu caso.</p>
+          <div className="mt-4 rounded-xl border border-blue-200 bg-white p-4">
+            <p className="text-sm font-semibold text-blue-900">Oferta de entrada</p>
+            <p className="mt-1 text-sm text-slate-700">{diagnosticOffer}</p>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+              <li>Incluye evaluación de riesgos y prioridades legales.</li>
+              <li>Definimos próximos pasos, tiempos y documentos críticos.</li>
+              <li>Aplica para empresas y familias con necesidades preventivas o urgentes.</li>
+            </ul>
+          </div>
+          <div className="mt-4 rounded-xl border border-blue-200 bg-white p-4">
+            <p className="text-sm font-semibold text-blue-900">Formulario corto de precalificación</p>
+            <p className="mt-1 text-xs text-slate-600">Este resumen se enviará automáticamente al abrir WhatsApp.</p>
+            <div className="mt-3 grid gap-3 md:grid-cols-2">
+              <label className="text-sm text-slate-700">
+                Perfil
+                <select
+                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  value={leadForm.perfil}
+                  onChange={(e) => setLeadForm((prev) => ({ ...prev, perfil: e.target.value }))}
+                >
+                  <option>Empresa</option>
+                  <option>Familia</option>
+                </select>
+              </label>
+              <label className="text-sm text-slate-700">
+                Necesidad principal
+                <select
+                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  value={leadForm.necesidad}
+                  onChange={(e) => setLeadForm((prev) => ({ ...prev, necesidad: e.target.value }))}
+                >
+                  <option>Prevención legal</option>
+                  <option>Urgencia legal</option>
+                  <option>Revisión contractual</option>
+                  <option>Protección patrimonial</option>
+                </select>
+              </label>
+              <label className="text-sm text-slate-700">
+                Urgencia
+                <select
+                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  value={leadForm.urgencia}
+                  onChange={(e) => setLeadForm((prev) => ({ ...prev, urgencia: e.target.value }))}
+                >
+                  <option>Hoy</option>
+                  <option>Esta semana</option>
+                  <option>Este mes</option>
+                </select>
+              </label>
+              <label className="text-sm text-slate-700">
+                Ciudad
+                <input
+                  className="mt-1 w-full rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                  placeholder="Ej. Bogotá"
+                  value={leadForm.ciudad}
+                  onChange={(e) => setLeadForm((prev) => ({ ...prev, ciudad: e.target.value }))}
+                />
+              </label>
+            </div>
+          </div>
           <div className="mt-4 flex flex-wrap gap-3">
-            <a href={whatsappLink} target="_blank" rel="noreferrer" className="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white">WhatsApp</a>
-            <a href={`mailto:${email}`} className="rounded-lg border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-900">{email}</a>
+            <a
+              href={whatsappLeadLink}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackEvent('whatsapp_opened', { perfil: leadForm.perfil, necesidad: leadForm.necesidad, urgencia: leadForm.urgencia })}
+              className="rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white"
+            >
+              WhatsApp
+            </a>
+            <a
+              href={`mailto:${email}`}
+              onClick={() => trackEvent('email_clicked', { perfil: leadForm.perfil })}
+              className="rounded-lg border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-900"
+            >
+              {email}
+            </a>
           </div>
         </div>
       </section>
