@@ -233,6 +233,15 @@ function renderEmbeddedFallback() {
           </section>
 
           <section class="section">
+            <h2>Secuencia de acompañamiento (nurturing)</h2>
+            <div class="grid grid-3">
+              <article class="card"><strong>Día 0 · Confirmación</strong><p class="muted">Resumen de tu caso por WhatsApp con siguiente paso recomendado.</p></article>
+              <article class="card"><strong>Día 1 · Educación</strong><p class="muted">Checklist de riesgos y documentos críticos por ruta.</p></article>
+              <article class="card"><strong>Día 3 · Conversión</strong><p class="muted">Invitación a agendar diagnóstico con plan inicial.</p></article>
+            </div>
+          </section>
+
+          <section class="section">
             <h2>Solicita una evaluación inicial</h2>
             <p class="muted">Agenda una reunión y recibe una ruta legal priorizada para tu caso.</p>
             <div class="card" style="margin-bottom:12px;">
