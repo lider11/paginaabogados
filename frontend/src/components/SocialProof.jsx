@@ -94,15 +94,6 @@ export default function SocialProof() {
             <blockquote key={item.quote} className="relative rounded-2xl border border-blue-100 bg-blue-50/50 p-8 shadow-sm">
               <p className="mb-3 text-yellow-500" aria-hidden="true">★★★★★</p>
               <p className="relative z-10 pt-1 text-sm italic leading-relaxed text-slate-700">“{item.quote}”</p>
-              <footer className="mt-6 border-t border-blue-200/50 pt-4">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-200 font-bold text-blue-900" aria-hidden="true">{item.author.charAt(0)}</span>
-                  <div>
-                    <p className="text-sm font-bold text-blue-900">{item.author}</p>
-                    <p className="text-xs text-slate-600">{item.company}</p>
-                  </div>
-                </div>
-              </footer>
             </blockquote>
           ))}
         </div>
