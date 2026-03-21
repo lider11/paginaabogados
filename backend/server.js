@@ -48,6 +48,7 @@ const candidateStaticDirs = [
 ].filter(Boolean);
 
 const staticDir = candidateStaticDirs.find((dir) => fs.existsSync(path.join(dir, 'index.html')));
+const hasSpaIndex = Boolean(staticDir && fs.existsSync(path.join(staticDir, 'index.html')));
 
 app.get('/api/health', (_req, res) => {
   res.json({
@@ -61,6 +62,8 @@ app.get('/api/version', (_req, res) => {
   res.json({
     appVersion: APP_VERSION,
     staticDir: staticDir || null,
+    hasSpaIndex,
+    routeMode: hasSpaIndex ? 'spa' : 'legacy_fallback',
     nodeEnv: process.env.NODE_ENV || 'development'
   });
 });
@@ -80,8 +83,16 @@ function tryServeRoutePage(slug, res, next) {
 }
 
 app.get('/rutas/:slug.html', (req, res, next) => {
-  if (!ENABLE_LEGACY_ROUTE_PAGES) {
+  if (hasSpaIndex) {
     return res.redirect(302, `/rutas/${req.params.slug}`);
+  }
+  return tryServeRoutePage(req.params.slug, res, next);
+});
+
+app.get('/rutas/:slug', (req, res, next) => {
+  if (hasSpaIndex) {
+    res.setHeader('Cache-Control', 'no-store, max-age=0');
+    return res.sendFile(path.join(staticDir, 'index.html'));
   }
   return tryServeRoutePage(req.params.slug, res, next);
 });
