@@ -10,6 +10,7 @@ export default function RutaPage({ onRouteSelect }) {
   }, [slug]);
 
   const isEmpresa = slug === 'empresas';
+  const canonicalRoute = `https://lexiuridicus.site/rutas/${slug || 'empresas'}`;
   
   const content = isEmpresa 
     ? {
@@ -40,6 +41,10 @@ export default function RutaPage({ onRouteSelect }) {
       <Helmet>
         <title>{isEmpresa ? 'Ruta Empresas' : 'Ruta Familias'} | Lexiuridicus</title>
         <meta name="description" content={content.desc} />
+        <link rel="canonical" href={canonicalRoute} />
+        <meta property="og:title" content={`${isEmpresa ? 'Ruta Empresas' : 'Ruta Familias'} | Lexiuridicus`} />
+        <meta property="og:description" content={content.desc} />
+        <meta property="og:url" content={canonicalRoute} />
       </Helmet>
       
       <main className="mx-auto max-w-5xl px-5 py-16">
