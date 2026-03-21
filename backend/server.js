@@ -108,24 +108,51 @@ function renderEmbeddedFallback() {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lexiuridicus | Servicios Jurídicos</title>
+    <title>Lexiuridicus | Fallback operativo</title>
     <meta name="x-ui-version" content="${APP_VERSION}" />
     <style>
       body { margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: #f8fafc; color: #0f172a; }
-      .wrap { max-width: 860px; margin: 8vh auto; padding: 0 20px; }
-      .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06); }
-      h1 { margin: 0 0 8px; color: #1e3a8a; }
-      p { margin: 8px 0; color: #334155; }
-      code { background: #f1f5f9; padding: 2px 6px; border-radius: 6px; }
+      .wrap { max-width: 980px; margin: 24px auto; padding: 0 20px 40px; }
+      .notice { background: #fff7ed; color: #9a3412; border: 1px solid #fed7aa; padding: 10px 14px; border-radius: 10px; margin-bottom: 16px; font-size: 14px; }
+      .hero { background: linear-gradient(130deg,#0f172a,#1e40af); border-radius: 16px; padding: 28px; color: #fff; box-shadow: 0 12px 30px rgba(15,23,42,.18); }
+      .chip { display: inline-block; border: 1px solid rgba(255,255,255,.3); border-radius: 999px; padding: 6px 12px; font-size: 13px; margin-top: 10px; }
+      .cta { display: inline-block; margin-top: 14px; background: #fff; color: #1e3a8a; border-radius: 10px; padding: 10px 14px; text-decoration: none; font-weight: 700; }
+      .grid { margin-top: 18px; display: grid; gap: 14px; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); }
+      .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; }
+      .btn { display: inline-block; margin-top: 10px; background: #1e3a8a; color: #fff; border-radius: 8px; padding: 9px 12px; text-decoration: none; font-weight: 600; }
+      h1,h2,p { margin: 0; }
+      p { margin-top: 8px; color: #334155; }
+      .hero p { color: #dbeafe; }
     </style>
   </head>
   <body>
     <main class="wrap">
-      <section class="card">
-        <h1>Lexiuridicus</h1>
-        <p>Modo fallback activo. No se encontró un build estático válido para SPA.</p>
-        <p>Versión activa: <code>${APP_VERSION}</code></p>
-        <p>Ejecuta <code>npm run build</code> para regenerar <code>frontend/dist</code> y sincronizar <code>public/</code>.</p>
+      <div class="notice">Modo fallback activo · versión <strong>${APP_VERSION}</strong>. Ejecuta <code>npm run build</code> para volver al modo SPA completo.</div>
+
+      <section class="hero">
+        <h1>Protege tu empresa y tu patrimonio con decisiones jurídicas claras</h1>
+        <p>Te ayudamos a prevenir riesgos legales y actuar con seguridad jurídica desde el primer contacto.</p>
+        <span class="chip">Diagnóstico legal inicial (30 min) + hoja de ruta en 48h</span><br/>
+        <a class="cta" href="#contacto">Agendar diagnóstico ahora</a>
+      </section>
+
+      <section class="grid" style="margin-top:18px;">
+        <article class="card">
+          <h2>Ruta Empresas</h2>
+          <p>Gobierno corporativo, riesgos contractuales y compliance.</p>
+          <a class="btn" href="/rutas/empresas">Abrir ruta empresas</a>
+        </article>
+        <article class="card">
+          <h2>Ruta Familias</h2>
+          <p>Patrimonio, sucesión y protección de activos.</p>
+          <a class="btn" href="/rutas/familias">Abrir ruta familias</a>
+        </article>
+      </section>
+
+      <section id="contacto" class="card" style="margin-top:14px;">
+        <h2>Contacto inmediato</h2>
+        <p>Escríbenos por WhatsApp y enviamos orientación inicial hoy mismo.</p>
+        <a class="btn" href="https://wa.me/573000000000" target="_blank" rel="noreferrer">Abrir WhatsApp</a>
       </section>
     </main>
   </body>
