@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const APP_VERSION = process.env.APP_VERSION || '2026-03-21-hero-sync-v2';
 
 app.use(cors());
 app.use(express.json());
@@ -47,12 +48,23 @@ const candidateStaticDirs = [
 ].filter(Boolean);
 
 const staticDir = candidateStaticDirs.find((dir) => fs.existsSync(path.join(dir, 'index.html')));
+const hasSpaIndex = Boolean(staticDir && fs.existsSync(path.join(staticDir, 'index.html')));
 
 app.get('/api/health', (_req, res) => {
   res.json({
     status: 'ok',
     app: 'Lexiuridicus API',
     staticDir: staticDir || null
+  });
+});
+
+app.get('/api/version', (_req, res) => {
+  res.json({
+    appVersion: APP_VERSION,
+    staticDir: staticDir || null,
+    hasSpaIndex,
+    routeMode: hasSpaIndex ? 'spa' : 'legacy_fallback',
+    nodeEnv: process.env.NODE_ENV || 'development'
   });
 });
 
@@ -71,10 +83,17 @@ function tryServeRoutePage(slug, res, next) {
 }
 
 app.get('/rutas/:slug.html', (req, res, next) => {
+  if (hasSpaIndex) {
+    return res.redirect(302, `/rutas/${req.params.slug}`);
+  }
   return tryServeRoutePage(req.params.slug, res, next);
 });
 
 app.get('/rutas/:slug', (req, res, next) => {
+  if (hasSpaIndex) {
+    res.setHeader('Cache-Control', 'no-store, max-age=0');
+    return res.sendFile(path.join(staticDir, 'index.html'));
+  }
   return tryServeRoutePage(req.params.slug, res, next);
 });
 
@@ -334,17 +353,19 @@ function renderEmbeddedFallback() {
 }
 
 if (staticDir) {
-  app.use(express.static(staticDir));
+  app.use(express.static(staticDir, {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-store, max-age=0');
+      }
+    }
+  }));
 
   app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api')) {
       return next();
     }
-    if (req.path.startsWith('/rutas/')) {
-      const routeSlug = req.path.split('/').pop() || '';
-      return tryServeRoutePage(routeSlug, res, next);
-    }
-
+    res.setHeader('Cache-Control', 'no-store, max-age=0');
     return res.sendFile(path.join(staticDir, 'index.html'));
   });
 } else {
@@ -353,7 +374,7 @@ if (staticDir) {
       return next();
     }
 
-    return res.status(200).send(renderEmbeddedFallback());
+    return res.status(200).set('Cache-Control', 'no-store, max-age=0').send(renderEmbeddedFallback());
   });
 }
 
