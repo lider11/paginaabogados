@@ -1,7 +1,27 @@
+import { useState } from 'react';
+
 export default function ContactForm({ leadForm, onLeadFormChange, diagnosticOffer, whatsappLink, email }) {
+  const [didStartForm, setDidStartForm] = useState(false);
+
   const handleWhatsappClick = () => {
     if (window.gtag) {
       window.gtag('event', 'click_whatsapp', { lead_perfil: leadForm.perfil });
+      window.gtag('event', 'submit_whatsapp_intent', { lead_perfil: leadForm.perfil, lead_urgencia: leadForm.urgencia });
+    }
+  };
+
+  const handleEmailClick = () => {
+    if (window.gtag) {
+      window.gtag('event', 'contact_email_click', { lead_perfil: leadForm.perfil });
+    }
+  };
+
+  const handleFormStart = () => {
+    if (didStartForm) return;
+
+    setDidStartForm(true);
+    if (window.gtag) {
+      window.gtag('event', 'start_form', { form_name: 'precalificacion' });
     }
   };
 
@@ -18,47 +38,51 @@ export default function ContactForm({ leadForm, onLeadFormChange, diagnosticOffe
 
   return (
     <section id="contacto" className="mx-auto max-w-6xl px-5 pb-16 pt-8">
-      <div className="rounded-3xl border border-blue-200 bg-blue-50/80 p-6 xl:p-12 shadow-sm relative overflow-hidden">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-blue-200 rounded-full blur-3xl opacity-40"></div>
-        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-indigo-200 rounded-full blur-3xl opacity-30"></div>
-        
-        <div className="relative z-10 grid md:grid-cols-2 gap-10">
+      <div className="relative overflow-hidden rounded-3xl border border-blue-200 bg-blue-50/80 p-6 shadow-sm xl:p-12">
+        <div className="absolute right-0 top-0 -mr-10 -mt-10 h-64 w-64 rounded-full bg-blue-200 opacity-40 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 h-40 w-40 rounded-full bg-indigo-200 opacity-30 blur-3xl"></div>
+
+        <div className="relative z-10 grid gap-10 md:grid-cols-2">
           <div>
-            <h2 className="text-3xl font-bold text-blue-900 mb-4">Solicita una evaluación inicial</h2>
-            <p className="text-slate-700 text-lg mb-8">Agenda una reunión y recibe una ruta legal priorizada y específica para tu caso.</p>
-            
-            <div className="rounded-2xl border border-blue-100 bg-white p-6 shadow-sm mb-6">
-              <p className="text-xs font-bold text-blue-900 uppercase tracking-widest mb-3">Oferta de entrada</p>
-              <p className="text-base font-medium text-slate-800 bg-slate-50 p-4 rounded-xl border border-slate-100 mb-5">{diagnosticOffer}</p>
+            <h2 className="mb-4 text-3xl font-bold text-blue-900">Agenda tu diagnóstico legal en 30 minutos</h2>
+            <p className="mb-8 text-lg text-slate-700">Cuéntanos tu caso y te responderemos hoy mismo con la mejor ruta de acción.</p>
+
+            <div className="mb-6 rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
+              <p className="mb-3 text-xs font-bold uppercase tracking-widest text-blue-900">Oferta de entrada</p>
+              <p className="mb-5 rounded-xl border border-slate-100 bg-slate-50 p-4 text-base font-medium text-slate-800">{diagnosticOffer}</p>
               <ul className="space-y-4">
-                <li className="flex items-start text-sm text-slate-700 leading-snug"><span className="mr-3 text-blue-500 font-bold">✓</span> Incluye evaluación de riesgos y prioridades legales para no improvisar.</li>
-                <li className="flex items-start text-sm text-slate-700 leading-snug"><span className="mr-3 text-blue-500 font-bold">✓</span> Definimos próximos pasos, tiempos de ejecución y documentos críticos.</li>
-                <li className="flex items-start text-sm text-slate-700 leading-snug"><span className="mr-3 text-blue-500 font-bold">✓</span> Aplica para empresas y familias con requerimientos preventivos o urgentes.</li>
+                <li className="flex items-start text-sm leading-snug text-slate-700"><span className="mr-3 font-bold text-blue-500">✓</span> Incluye evaluación de riesgos y prioridades legales para no improvisar.</li>
+                <li className="flex items-start text-sm leading-snug text-slate-700"><span className="mr-3 font-bold text-blue-500">✓</span> Definimos próximos pasos, tiempos de ejecución y documentos críticos.</li>
+                <li className="flex items-start text-sm leading-snug text-slate-700"><span className="mr-3 font-bold text-blue-500">✓</span> Aplica para empresas y familias con requerimientos preventivos o urgentes.</li>
               </ul>
             </div>
           </div>
-          
-          <div className="rounded-3xl border border-blue-100 bg-white p-6 md:p-8 shadow-sm">
-            <h3 className="text-xl font-bold text-blue-900 mb-1">Formulario de precalificación</h3>
-            <p className="text-sm text-slate-500 mb-8">Este resumen de datos se enviará automáticamente al abrir WhatsApp para agilizar la llamada.</p>
-            
-            <div className="grid gap-5 sm:grid-cols-2 mb-8">
-              <label className="block text-sm font-semibold text-slate-700">
-                Perfil
+
+          <div className="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm md:p-8">
+            <h3 className="mb-1 text-xl font-bold text-blue-900">Comienza en 1 minuto</h3>
+            <p className="mb-8 text-sm text-slate-500">Completas estos datos una sola vez y enviamos el contexto para acelerar tu asesoría.</p>
+
+            <div className="mb-8 grid gap-5 sm:grid-cols-2">
+              <div className="block text-sm font-semibold text-slate-700">
+                <label htmlFor="lead-perfil">Perfil</label>
                 <select
-                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500 transition-all outline-none"
+                  id="lead-perfil"
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500"
                   value={leadForm.perfil}
+                  onFocus={handleFormStart}
                   onChange={(e) => onLeadFormChange({ perfil: e.target.value })}
                 >
                   <option>Empresa</option>
                   <option>Familia</option>
                 </select>
-              </label>
-              <label className="block text-sm font-semibold text-slate-700">
-                Necesidad principal
+              </div>
+              <div className="block text-sm font-semibold text-slate-700">
+                <label htmlFor="lead-necesidad">Necesidad principal</label>
                 <select
-                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500 transition-all outline-none"
+                  id="lead-necesidad"
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500"
                   value={leadForm.necesidad}
+                  onFocus={handleFormStart}
                   onChange={(e) => onLeadFormChange({ necesidad: e.target.value })}
                 >
                   <option>Prevención legal</option>
@@ -66,43 +90,49 @@ export default function ContactForm({ leadForm, onLeadFormChange, diagnosticOffe
                   <option>Revisión contractual</option>
                   <option>Protección patrimonial</option>
                 </select>
-              </label>
-              <label className="block text-sm font-semibold text-slate-700">
-                Urgencia
+              </div>
+              <div className="block text-sm font-semibold text-slate-700">
+                <label htmlFor="lead-urgencia">Urgencia</label>
                 <select
-                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500 transition-all outline-none"
+                  id="lead-urgencia"
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500"
                   value={leadForm.urgencia}
+                  onFocus={handleFormStart}
                   onChange={(e) => onLeadFormChange({ urgencia: e.target.value })}
                 >
                   <option>Hoy</option>
                   <option>Esta semana</option>
                   <option>Este mes</option>
                 </select>
-              </label>
-              <label className="block text-sm font-semibold text-slate-700">
-                Ciudad
+              </div>
+              <div className="block text-sm font-semibold text-slate-700">
+                <label htmlFor="lead-ciudad">Ciudad</label>
                 <input
-                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500 transition-all outline-none"
+                  id="lead-ciudad"
+                  autoComplete="address-level2"
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500"
                   placeholder="Ej. Bogotá"
                   value={leadForm.ciudad}
+                  onFocus={handleFormStart}
                   onChange={(e) => onLeadFormChange({ ciudad: e.target.value })}
                 />
-              </label>
+              </div>
             </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-100 mt-auto">
-              <a 
-                href={whatsappLeadLink} 
-                target="_blank" 
-                rel="noreferrer" 
+
+            <div className="mt-auto flex flex-col gap-4 border-t border-slate-100 pt-6 sm:flex-row">
+              <a
+                href={whatsappLeadLink}
+                target="_blank"
+                rel="noreferrer"
                 onClick={handleWhatsappClick}
-                className="flex-1 text-center rounded-xl bg-blue-900 px-6 py-4 text-base font-bold text-white shadow-md hover:bg-blue-800 hover:shadow-lg transition-all focus:ring-4 focus:ring-blue-900/20 outline-none"
+                className="flex-1 rounded-xl bg-blue-900 px-6 py-4 text-center text-base font-bold text-white shadow-md transition-all hover:bg-blue-800 hover:shadow-lg focus:ring-4 focus:ring-blue-900/20 focus:outline-none"
               >
                 Abrir en WhatsApp
               </a>
-              <a 
-                href={`mailto:${email}`} 
-                className="flex-shrink-0 text-center rounded-xl border-2 border-slate-200 px-6 py-4 text-sm font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center focus:ring-4 focus:ring-slate-100 outline-none"
+              <a
+                href={`mailto:${email}`}
+                onClick={handleEmailClick}
+                className="flex flex-shrink-0 items-center justify-center rounded-xl border-2 border-slate-200 px-6 py-4 text-center text-sm font-bold text-slate-700 transition-all hover:border-slate-300 hover:bg-slate-50 focus:ring-4 focus:ring-slate-100 focus:outline-none"
               >
                 o enviar Email
               </a>
