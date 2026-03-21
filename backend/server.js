@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const APP_VERSION = process.env.APP_VERSION || '2026-03-21-hero-sync-v2';
 
 app.use(cors());
 app.use(express.json());
@@ -53,6 +54,14 @@ app.get('/api/health', (_req, res) => {
     status: 'ok',
     app: 'Lexiuridicus API',
     staticDir: staticDir || null
+  });
+});
+
+app.get('/api/version', (_req, res) => {
+  res.json({
+    appVersion: APP_VERSION,
+    staticDir: staticDir || null,
+    nodeEnv: process.env.NODE_ENV || 'development'
   });
 });
 
@@ -334,7 +343,13 @@ function renderEmbeddedFallback() {
 }
 
 if (staticDir) {
-  app.use(express.static(staticDir));
+  app.use(express.static(staticDir, {
+    setHeaders: (res, filePath) => {
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-store, max-age=0');
+      }
+    }
+  }));
 
   app.get('*', (req, res, next) => {
     if (req.path.startsWith('/api')) {
@@ -345,6 +360,7 @@ if (staticDir) {
       return tryServeRoutePage(routeSlug, res, next);
     }
 
+    res.setHeader('Cache-Control', 'no-store, max-age=0');
     return res.sendFile(path.join(staticDir, 'index.html'));
   });
 } else {
@@ -353,7 +369,7 @@ if (staticDir) {
       return next();
     }
 
-    return res.status(200).send(renderEmbeddedFallback());
+    return res.status(200).set('Cache-Control', 'no-store, max-age=0').send(renderEmbeddedFallback());
   });
 }
 
