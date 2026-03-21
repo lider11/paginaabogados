@@ -6,7 +6,6 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 4000;
 const APP_VERSION = process.env.APP_VERSION || '2026-03-21-hero-sync-v2';
-const ENABLE_LEGACY_ROUTE_PAGES = process.env.ENABLE_LEGACY_ROUTE_PAGES === 'true';
 
 app.use(cors());
 app.use(express.json());
