@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import ContactForm from './components/ContactForm';
+import Footer from './components/Footer';
 import Toast from './components/Toast';
 import HomePage from './pages/HomePage';
 import RutaPage from './pages/RutaPage';
@@ -40,6 +41,7 @@ function App() {
   const [error, setError] = useState('');
   const [toastMessage, setToastMessage] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [leadForm, setLeadForm] = useState({
     perfil: 'Empresa',
@@ -74,6 +76,19 @@ function App() {
       });
   }, []);
 
+  useEffect(() => {
+    if (!window.gtag) return;
+
+    if (location.pathname === '/') {
+      window.gtag('event', 'view_home');
+      return;
+    }
+
+    if (location.pathname.startsWith('/rutas/')) {
+      window.gtag('event', 'view_route', { route_slug: location.pathname.replace('/rutas/', '') });
+    }
+  }, [location.pathname]);
+
   const updateLeadForm = (newData) => {
     setLeadForm((prev) => {
       const updated = { ...prev, ...newData };
@@ -84,7 +99,7 @@ function App() {
 
   const handleRouteSelect = (e, route) => {
     e.preventDefault();
-    
+
     const isEmpresa = route.id === 'empresa';
     updateLeadForm({
       perfil: isEmpresa ? 'Empresa' : 'Familia',
@@ -98,7 +113,6 @@ function App() {
       window.gtag('event', 'select_route', { route_name: route.title });
     }
 
-    // Go to home and scroll to contact
     navigate('/', { replace: true });
     setTimeout(() => {
       const contactSection = document.getElementById('contacto');
@@ -109,31 +123,32 @@ function App() {
   };
 
   return (
-    <div className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans">
+    <div className="min-h-screen flex flex-col bg-slate-50 font-sans text-slate-900">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-blue-900">Saltar al contenido principal</a>
       <Header whatsappLink={whatsappLink} />
-      
-      <div className="flex-grow">
+
+      <main id="main-content" className="flex-grow">
         <Routes>
-          <Route 
-            path="/" 
-            element={
-              <HomePage 
+          <Route
+            path="/"
+            element={(
+              <HomePage
                 diagnosticOffer={diagnosticOffer}
                 onRouteSelect={handleRouteSelect}
                 services={services}
                 loading={loading}
                 error={error}
               />
-            } 
+            )}
           />
-          <Route 
-            path="/rutas/:slug" 
-            element={<RutaPage onRouteSelect={handleRouteSelect} />} 
+          <Route
+            path="/rutas/:slug"
+            element={<RutaPage onRouteSelect={handleRouteSelect} />}
           />
         </Routes>
-      </div>
+      </main>
 
-      <ContactForm 
+      <ContactForm
         leadForm={leadForm}
         onLeadFormChange={updateLeadForm}
         diagnosticOffer={diagnosticOffer}
@@ -141,6 +156,7 @@ function App() {
         email={email}
       />
 
+      <Footer />
       <Toast message={toastMessage} />
     </div>
   );
