@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import ContactForm from './components/ContactForm';
+import Footer from './components/Footer';
 import Toast from './components/Toast';
 import HomePage from './pages/HomePage';
 import RutaPage from './pages/RutaPage';
@@ -155,6 +156,7 @@ function App() {
         email={email}
       />
 
+      <Footer />
       <Toast message={toastMessage} />
     </div>
   );
