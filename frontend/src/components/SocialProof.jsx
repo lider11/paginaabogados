@@ -63,6 +63,9 @@ export default function SocialProof() {
               </div>
             ))}
           </div>
+          <p className="mt-4 text-center text-xs text-slate-500">
+            Corte de indicadores: marzo 2026. Base consolidada de casos atendidos y documentados en procesos de diagnóstico inicial.
+          </p>
 
           <div className="mt-16">
             <h3 className="text-2xl font-bold text-slate-800 text-center mb-8">Casos representativos</h3>
