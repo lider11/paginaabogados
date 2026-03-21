@@ -80,10 +80,9 @@ function tryServeRoutePage(slug, res, next) {
 }
 
 app.get('/rutas/:slug.html', (req, res, next) => {
-  return tryServeRoutePage(req.params.slug, res, next);
-});
-
-app.get('/rutas/:slug', (req, res, next) => {
+  if (!ENABLE_LEGACY_ROUTE_PAGES) {
+    return res.redirect(302, `/rutas/${req.params.slug}`);
+  }
   return tryServeRoutePage(req.params.slug, res, next);
 });
 
