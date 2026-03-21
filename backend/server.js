@@ -6,6 +6,7 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 4000;
 const APP_VERSION = process.env.APP_VERSION || '2026-03-21-hero-sync-v2';
+const ENABLE_LEGACY_ROUTE_PAGES = process.env.ENABLE_LEGACY_ROUTE_PAGES === 'true';
 
 app.use(cors());
 app.use(express.json());
@@ -80,10 +81,9 @@ function tryServeRoutePage(slug, res, next) {
 }
 
 app.get('/rutas/:slug.html', (req, res, next) => {
-  return tryServeRoutePage(req.params.slug, res, next);
-});
-
-app.get('/rutas/:slug', (req, res, next) => {
+  if (!ENABLE_LEGACY_ROUTE_PAGES) {
+    return res.redirect(302, `/rutas/${req.params.slug}`);
+  }
   return tryServeRoutePage(req.params.slug, res, next);
 });
 
@@ -355,11 +355,6 @@ if (staticDir) {
     if (req.path.startsWith('/api')) {
       return next();
     }
-    if (req.path.startsWith('/rutas/')) {
-      const routeSlug = req.path.split('/').pop() || '';
-      return tryServeRoutePage(routeSlug, res, next);
-    }
-
     res.setHeader('Cache-Control', 'no-store, max-age=0');
     return res.sendFile(path.join(staticDir, 'index.html'));
   });
