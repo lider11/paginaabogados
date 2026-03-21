@@ -23,8 +23,8 @@ export default function RoutesSection({ onRouteSelect }) {
   return (
     <section id="rutas" className="mx-auto max-w-6xl px-5 pb-12 pt-4">
       <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-        <h2 className="text-2xl font-bold text-slate-800">Elige tu ruta según tu perfil</h2>
-        <p className="mt-2 max-w-2xl text-slate-600">Segmentamos el diagnóstico para acelerar decisiones según tipo de cliente.</p>
+        <h2 className="text-2xl font-bold text-slate-800">Empieza por la ruta que mejor describe tu caso</h2>
+        <p className="mt-2 max-w-2xl text-slate-600">Selecciona tu perfil y te proponemos prioridades legales desde el primer contacto.</p>
 
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           {icpRoutes.map((route) => (
@@ -51,7 +51,7 @@ export default function RoutesSection({ onRouteSelect }) {
                   onClick={(e) => onRouteSelect(e, route)}
                   className="inline-flex items-center justify-center rounded-lg bg-blue-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-800 hover:shadow"
                 >
-                  Pre-llenar perfil
+                  Aplicar esta ruta
                 </button>
                 <Link
                   to={route.href}

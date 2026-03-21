@@ -5,14 +5,25 @@ const serviceIcons = {
   'Imagen Empresarial': '✨'
 };
 
+const outcomes = [
+  'Evitas contingencias y costos innecesarios.',
+  'Recibes decisiones priorizadas y ejecutables.',
+  'Alineas lo legal con tus objetivos de negocio.'
+];
+
 export default function ServicesSection({ services, loading, error }) {
   return (
     <section id="servicios" className="mx-auto max-w-6xl px-5 py-16">
       <div className="rounded-3xl bg-gradient-to-b from-slate-100 to-white p-6 sm:p-10">
-        <div className="mx-auto mb-10 max-w-2xl text-center">
+        <div className="mx-auto mb-10 max-w-3xl text-center">
           <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-900">Servicios clave</span>
-          <h2 className="mt-3 text-3xl font-bold text-slate-800 sm:text-4xl">Servicios legales especializados</h2>
-          <p className="mt-4 text-slate-600">Líneas de trabajo diseñadas para proteger patrimonio, asegurar gobierno corporativo y escalar operaciones empresariales.</p>
+          <h2 className="mt-3 text-3xl font-bold text-slate-800 sm:text-4xl">¿Qué resolvemos por ti?</h2>
+          <p className="mt-4 text-slate-600">Intervenciones legales enfocadas en resultados, no en trámites interminables.</p>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {outcomes.map((item) => (
+              <span key={item} className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-600">{item}</span>
+            ))}
+          </div>
         </div>
 
         {loading && <div className="flex justify-center py-10"><p className="font-medium text-slate-500 animate-pulse">Cargando catálogo de servicios...</p></div>}

@@ -44,8 +44,8 @@ export default function ContactForm({ leadForm, onLeadFormChange, diagnosticOffe
 
         <div className="relative z-10 grid gap-10 md:grid-cols-2">
           <div>
-            <h2 className="mb-4 text-3xl font-bold text-blue-900">Solicita una evaluación inicial</h2>
-            <p className="mb-8 text-lg text-slate-700">Agenda una reunión y recibe una ruta legal priorizada y específica para tu caso.</p>
+            <h2 className="mb-4 text-3xl font-bold text-blue-900">Agenda tu diagnóstico legal en 30 minutos</h2>
+            <p className="mb-8 text-lg text-slate-700">Cuéntanos tu caso y te responderemos hoy mismo con la mejor ruta de acción.</p>
 
             <div className="mb-6 rounded-2xl border border-blue-100 bg-white p-6 shadow-sm">
               <p className="mb-3 text-xs font-bold uppercase tracking-widest text-blue-900">Oferta de entrada</p>
@@ -59,8 +59,8 @@ export default function ContactForm({ leadForm, onLeadFormChange, diagnosticOffe
           </div>
 
           <div className="rounded-3xl border border-blue-100 bg-white p-6 shadow-sm md:p-8">
-            <h3 className="mb-1 text-xl font-bold text-blue-900">Formulario de precalificación</h3>
-            <p className="mb-8 text-sm text-slate-500">Este resumen de datos se enviará automáticamente al abrir WhatsApp para agilizar la llamada.</p>
+            <h3 className="mb-1 text-xl font-bold text-blue-900">Comienza en 1 minuto</h3>
+            <p className="mb-8 text-sm text-slate-500">Completas estos datos una sola vez y enviamos el contexto para acelerar tu asesoría.</p>
 
             <div className="mb-8 grid gap-5 sm:grid-cols-2">
               <div className="block text-sm font-semibold text-slate-700">
