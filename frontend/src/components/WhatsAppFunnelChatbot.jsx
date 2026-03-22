@@ -5,12 +5,12 @@ const steps = [
   {
     id: 'perfil',
     question: '¡Hola! 👋 ¿Para quién necesitas apoyo legal?',
-    options: ['Empresa', 'Emprendedor/a', 'Familia']
+    options: ['Empresa', 'Familia']
   },
   {
-    id: 'objetivo',
+    id: 'necesidad',
     question: 'Perfecto. ¿Qué quieres resolver primero?',
-    options: ['Prevenir riesgos legales', 'Resolver un problema actual', 'Ordenar documentos y contratos']
+    options: ['Prevención legal', 'Urgencia legal', 'Revisión contractual', 'Protección patrimonial']
   },
   {
     id: 'urgencia',
@@ -25,10 +25,9 @@ function buildWhatsappUrl(baseLink, message) {
   return `${baseLink}${separator}text=${encodeURIComponent(message)}`;
 }
 
-export default function WhatsAppFunnelChatbot({ whatsappLink }) {
+export default function WhatsAppFunnelChatbot({ whatsappLink, leadForm, onLeadFormChange }) {
   const [isOpen, setIsOpen] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
 
   const launcherRef = useRef(null);
   const dialogRef = useRef(null);
@@ -54,13 +53,14 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
     return [
       'Hola, vengo del chatbot de Lexiuridicus y quiero una asesoría.',
       '',
-      `Perfil: ${answers.perfil ?? 'Sin definir'}`,
-      `Objetivo principal: ${answers.objetivo ?? 'Sin definir'}`,
-      `Urgencia: ${answers.urgencia ?? 'Sin definir'}`,
+      `Perfil: ${leadForm.perfil ?? 'Sin definir'}`,
+      `Objetivo principal: ${leadForm.necesidad ?? 'Sin definir'}`,
+      `Urgencia: ${leadForm.urgencia ?? 'Sin definir'}`,
+      `Ciudad: ${leadForm.ciudad || 'No especificada'}`,
       '',
       '¿Podemos agendar el diagnóstico legal inicial?'
     ].join('\n');
-  }, [answers, isCompleted]);
+  }, [isCompleted, leadForm]);
 
   const handleAnswer = (value) => {
     if (!step) return;
@@ -71,12 +71,11 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
       qualify_value: value
     });
 
-    setAnswers((prev) => ({ ...prev, [step.id]: value }));
+    onLeadFormChange({ [step.id]: value });
     setStepIndex((prev) => prev + 1);
   };
 
   const resetFunnel = () => {
-    setAnswers({});
     setStepIndex(0);
   };
 
@@ -127,6 +126,7 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
             <div>
               <p className="wa-chatbot__title">Asistente de orientación</p>
               <p className="wa-chatbot__subtitle">Responde 3 preguntas y te llevamos a WhatsApp</p>
+              <p className="wa-chatbot__sla">SLA: respondemos en menos de 30 min hábil.</p>
             </div>
             <button
               ref={closeButtonRef}
@@ -159,7 +159,7 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
               </>
             ) : (
               <div className="wa-chatbot__result">
-                <p className="wa-chatbot__question">¡Listo! Ya tengo lo necesario para orientarte mejor.</p>
+                <p className="wa-chatbot__question">¡Listo! Ya tenemos tu perfil y necesidad en un solo lead.</p>
                 <a
                   href={buildWhatsappUrl(whatsappLink, whatsappMessage)}
                   className="wa-chatbot__cta"
@@ -173,8 +173,8 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
                     trackFunnelEvent(FUNNEL_EVENTS.SUBMIT_INTENT, {
                       channel: 'whatsapp',
                       source: 'chatbot',
-                      perfil: answers.perfil || 'Sin definir',
-                      urgencia: answers.urgencia || 'Sin definir'
+                      perfil: leadForm.perfil || 'Sin definir',
+                      urgencia: leadForm.urgencia || 'Sin definir'
                     });
                     trackFunnelEvent(FUNNEL_EVENTS.BOOKED, {
                       booking_source: 'chatbot_whatsapp_click'
@@ -196,7 +196,12 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
         ref={launcherRef}
         type="button"
         className="wa-chatbot__launcher"
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => {
+          setIsOpen((prev) => !prev);
+          trackFunnelEvent(FUNNEL_EVENTS.START, {
+            start_source: 'chatbot_launcher'
+          });
+        }}
         aria-expanded={isOpen}
         aria-controls="wa-chatbot"
       >

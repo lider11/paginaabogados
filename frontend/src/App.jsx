@@ -162,7 +162,11 @@ function App() {
       />
 
       <Footer />
-      <WhatsAppFunnelChatbot whatsappLink={whatsappLink} />
+      <WhatsAppFunnelChatbot
+        whatsappLink={whatsappLink}
+        leadForm={leadForm}
+        onLeadFormChange={updateLeadForm}
+      />
       <Toast message={toastMessage} />
     </div>
   );

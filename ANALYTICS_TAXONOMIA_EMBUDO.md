@@ -15,6 +15,12 @@ Todos los eventos enviados por `trackFunnelEvent` incluyen:
 
 ## Fuentes instrumentadas
 - `App.jsx`: `view`, `qualify`.
+- `Hero.jsx`: `start` (A/B CTA principal).
 - `ContactForm.jsx`: `start`, `whatsapp_click`, `submit_intent`.
 - `Header.jsx`: `whatsapp_click`, `submit_intent`.
-- `WhatsAppFunnelChatbot.jsx`: `qualify`, `whatsapp_click`, `submit_intent`, `booked`.
+- `WhatsAppFunnelChatbot.jsx`: `start`, `qualify`, `whatsapp_click`, `submit_intent`, `booked`.
+
+## KPI fase 2 vinculados
+- **+20% CTR a WhatsApp:** `whatsapp_click / view`.
+- **+15% completion de pre-cualificación:** usuarios que disparan `qualify` en los 3 campos clave.
+- **-10% abandono en primer scroll:** usuarios con `start` (hero/chatbot/form) antes de salir sin `submit_intent`.

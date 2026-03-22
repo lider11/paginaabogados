@@ -204,3 +204,10 @@ Se ejecutó una auditoría inicial y se dejó evidencia en `ACCESSIBILITY_AUDITO
 
 ### Fase 1 · Paso 4 (Taxonomía de eventos de embudo) ✅
 Se estandarizó la taxonomía de eventos solicitada (`view`, `start`, `qualify`, `whatsapp_click`, `submit_intent`, `booked`) mediante un helper común en frontend (`frontend/src/utils/analytics.js`) y se aplicó en puntos clave de interacción (vista, formulario, header y chatbot). Ver detalle en `ANALYTICS_TAXONOMIA_EMBUDO.md`.
+
+### Fase 2 · Avance inicial (journey unificado + SLA + A/B + confianza) ✅
+Se implementó un primer corte funcional de Fase 2:
+- Chatbot y formulario comparten un único estado de lead (`leadForm`).
+- Mensajes SLA visibles en chatbot y bloque de contacto ("respondemos en < 30 min hábil").
+- Test A/B en CTA principal del hero (copy + sticky behavior por variante).
+- Nuevo bloque de confianza verificable con credenciales, casos y testimonios validados.
