@@ -7,6 +7,7 @@ import Toast from './components/Toast';
 import HomePage from './pages/HomePage';
 import RutaPage from './pages/RutaPage';
 import WhatsAppFunnelChatbot from './components/WhatsAppFunnelChatbot';
+import { FUNNEL_EVENTS, trackFunnelEvent } from './utils/analytics';
 
 const API_URL = '/api/services';
 const whatsappLink = 'https://wa.me/573000000000';
@@ -78,15 +79,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!window.gtag) return;
-
     if (location.pathname === '/') {
-      window.gtag('event', 'view_home');
+      trackFunnelEvent(FUNNEL_EVENTS.VIEW, { template: 'home' });
       return;
     }
 
     if (location.pathname.startsWith('/rutas/')) {
-      window.gtag('event', 'view_route', { route_slug: location.pathname.replace('/rutas/', '') });
+      trackFunnelEvent(FUNNEL_EVENTS.VIEW, {
+        template: 'ruta',
+        route_slug: location.pathname.replace('/rutas/', '')
+      });
     }
   }, [location.pathname]);
 
@@ -110,9 +112,11 @@ function App() {
     setToastMessage(`Ruta ${route.title.replace('Ruta ', '')} aplicada. Deslizando al formulario...`);
     setTimeout(() => setToastMessage(null), 3000);
 
-    if (window.gtag) {
-      window.gtag('event', 'select_route', { route_name: route.title });
-    }
+    trackFunnelEvent(FUNNEL_EVENTS.QUALIFY, {
+      qualify_source: 'route_selector',
+      route_name: route.title,
+      perfil: isEmpresa ? 'Empresa' : 'Familia'
+    });
 
     navigate('/', { replace: true });
     setTimeout(() => {

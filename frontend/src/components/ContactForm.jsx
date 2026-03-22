@@ -1,28 +1,38 @@
 import { useState } from 'react';
+import { FUNNEL_EVENTS, trackFunnelEvent } from '../utils/analytics';
 
 export default function ContactForm({ leadForm, onLeadFormChange, diagnosticOffer, whatsappLink, email }) {
   const [didStartForm, setDidStartForm] = useState(false);
 
   const handleWhatsappClick = () => {
-    if (window.gtag) {
-      window.gtag('event', 'click_whatsapp', { lead_perfil: leadForm.perfil });
-      window.gtag('event', 'submit_whatsapp_intent', { lead_perfil: leadForm.perfil, lead_urgencia: leadForm.urgencia });
-    }
+    trackFunnelEvent(FUNNEL_EVENTS.WHATSAPP_CLICK, {
+      channel: 'whatsapp',
+      perfil: leadForm.perfil
+    });
+
+    trackFunnelEvent(FUNNEL_EVENTS.SUBMIT_INTENT, {
+      channel: 'whatsapp',
+      perfil: leadForm.perfil,
+      urgencia: leadForm.urgencia
+    });
   };
 
   const handleEmailClick = () => {
-    if (window.gtag) {
-      window.gtag('event', 'contact_email_click', { lead_perfil: leadForm.perfil });
-    }
+    trackFunnelEvent(FUNNEL_EVENTS.SUBMIT_INTENT, {
+      channel: 'email',
+      perfil: leadForm.perfil,
+      urgencia: leadForm.urgencia
+    });
   };
 
   const handleFormStart = () => {
     if (didStartForm) return;
 
     setDidStartForm(true);
-    if (window.gtag) {
-      window.gtag('event', 'start_form', { form_name: 'precalificacion' });
-    }
+    trackFunnelEvent(FUNNEL_EVENTS.START, {
+      start_source: 'contact_form',
+      form_name: 'precalificacion'
+    });
   };
 
   const whatsappPrefill = encodeURIComponent(

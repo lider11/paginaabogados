@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { FUNNEL_EVENTS, trackFunnelEvent } from '../utils/analytics';
 
 const steps = [
   {
@@ -63,6 +64,12 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
 
   const handleAnswer = (value) => {
     if (!step) return;
+
+    trackFunnelEvent(FUNNEL_EVENTS.QUALIFY, {
+      qualify_source: 'chatbot',
+      qualify_field: step.id,
+      qualify_value: value
+    });
 
     setAnswers((prev) => ({ ...prev, [step.id]: value }));
     setStepIndex((prev) => prev + 1);
@@ -158,6 +165,21 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
                   className="wa-chatbot__cta"
                   target="_blank"
                   rel="noreferrer"
+                  onClick={() => {
+                    trackFunnelEvent(FUNNEL_EVENTS.WHATSAPP_CLICK, {
+                      channel: 'whatsapp',
+                      source: 'chatbot'
+                    });
+                    trackFunnelEvent(FUNNEL_EVENTS.SUBMIT_INTENT, {
+                      channel: 'whatsapp',
+                      source: 'chatbot',
+                      perfil: answers.perfil || 'Sin definir',
+                      urgencia: answers.urgencia || 'Sin definir'
+                    });
+                    trackFunnelEvent(FUNNEL_EVENTS.BOOKED, {
+                      booking_source: 'chatbot_whatsapp_click'
+                    });
+                  }}
                 >
                   Continuar en WhatsApp
                 </a>
