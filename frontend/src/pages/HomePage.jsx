@@ -4,6 +4,7 @@ import RoutesSection from '../components/RoutesSection';
 import ServicesSection from '../components/ServicesSection';
 import Methodology from '../components/Methodology';
 import SocialProof from '../components/SocialProof';
+import TrustEvidence from '../components/TrustEvidence';
 
 export default function HomePage({ diagnosticOffer, onRouteSelect, services, loading, error }) {
   return (
@@ -22,6 +23,7 @@ export default function HomePage({ diagnosticOffer, onRouteSelect, services, loa
       <ServicesSection services={services} loading={loading} error={error} />
       <Methodology />
       <SocialProof />
+      <TrustEvidence />
     </>
   );
 }

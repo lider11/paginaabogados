@@ -1,10 +1,44 @@
+import { useEffect, useMemo, useState } from 'react';
+import { FUNNEL_EVENTS, trackFunnelEvent } from '../utils/analytics';
+
 const trustPills = [
   'Respuesta inicial en menos de 24h',
   'Diagnóstico sin compromiso',
   'Ruta legal accionable en 48h'
 ];
 
+const ctaVariants = {
+  A: {
+    ctaText: 'Agendar diagnóstico ahora',
+    subText: 'Habla con un abogado hoy',
+    sticky: false
+  },
+  B: {
+    ctaText: 'Recibir orientación legal hoy',
+    subText: 'SLA: respuesta < 30 min hábil',
+    sticky: true
+  }
+};
+
 export default function Hero({ diagnosticOffer }) {
+  const [variant, setVariant] = useState('A');
+
+  useEffect(() => {
+    const key = 'lexiuridicus_cta_variant';
+    const saved = sessionStorage.getItem(key);
+
+    if (saved && (saved === 'A' || saved === 'B')) {
+      setVariant(saved);
+      return;
+    }
+
+    const selected = Math.random() < 0.5 ? 'A' : 'B';
+    sessionStorage.setItem(key, selected);
+    setVariant(selected);
+  }, []);
+
+  const activeVariant = useMemo(() => ctaVariants[variant] || ctaVariants.A, [variant]);
+
   return (
     <section className="mx-auto max-w-6xl px-5 pb-10 pt-10">
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-blue-900 to-indigo-800 p-8 text-white shadow-2xl shadow-blue-900/25 sm:p-14">
@@ -39,12 +73,18 @@ export default function Hero({ diagnosticOffer }) {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <a href="#contacto" className="rounded-xl bg-white px-6 py-3 text-sm font-bold text-blue-900 shadow-lg transition-all hover:scale-105 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-white/50">Agendar diagnóstico ahora</a>
+            <a
+              href="#contacto"
+              onClick={() => trackFunnelEvent(FUNNEL_EVENTS.START, { start_source: `hero_cta_${variant}` })}
+              className="rounded-xl bg-white px-6 py-3 text-sm font-bold text-blue-900 shadow-lg transition-all hover:scale-105 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-white/50"
+            >
+              {activeVariant.ctaText}
+            </a>
             <a href="#metodologia" className="rounded-xl border border-white/40 px-6 py-3 text-sm font-semibold text-white transition-all hover:border-white/60 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50">Ver cómo trabajamos</a>
           </div>
 
           <p className="mt-3 text-xs text-blue-100/80">
-            Sin lenguaje confuso: saldrás con prioridades claras, tiempos y próximos pasos.
+            {activeVariant.subText}
           </p>
         </div>
       </div>
@@ -66,6 +106,13 @@ export default function Hero({ diagnosticOffer }) {
           <p className="mt-1 text-xs text-slate-500">Te orientamos desde el primer mensaje.</p>
         </div>
       </div>
+
+      {activeVariant.sticky && (
+        <div className="hero-sticky-cta" role="region" aria-label="Acción rápida de asesoría">
+          <p className="hero-sticky-cta__text">{activeVariant.subText}</p>
+          <a href="#contacto" className="hero-sticky-cta__button">{activeVariant.ctaText}</a>
+        </div>
+      )}
     </section>
   );
 }
