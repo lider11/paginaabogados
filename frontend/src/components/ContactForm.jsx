@@ -1,28 +1,38 @@
 import { useState } from 'react';
+import { FUNNEL_EVENTS, trackFunnelEvent } from '../utils/analytics';
 
 export default function ContactForm({ leadForm, onLeadFormChange, diagnosticOffer, whatsappLink, email }) {
   const [didStartForm, setDidStartForm] = useState(false);
 
   const handleWhatsappClick = () => {
-    if (window.gtag) {
-      window.gtag('event', 'click_whatsapp', { lead_perfil: leadForm.perfil });
-      window.gtag('event', 'submit_whatsapp_intent', { lead_perfil: leadForm.perfil, lead_urgencia: leadForm.urgencia });
-    }
+    trackFunnelEvent(FUNNEL_EVENTS.WHATSAPP_CLICK, {
+      channel: 'whatsapp',
+      perfil: leadForm.perfil
+    });
+
+    trackFunnelEvent(FUNNEL_EVENTS.SUBMIT_INTENT, {
+      channel: 'whatsapp',
+      perfil: leadForm.perfil,
+      urgencia: leadForm.urgencia
+    });
   };
 
   const handleEmailClick = () => {
-    if (window.gtag) {
-      window.gtag('event', 'contact_email_click', { lead_perfil: leadForm.perfil });
-    }
+    trackFunnelEvent(FUNNEL_EVENTS.SUBMIT_INTENT, {
+      channel: 'email',
+      perfil: leadForm.perfil,
+      urgencia: leadForm.urgencia
+    });
   };
 
   const handleFormStart = () => {
     if (didStartForm) return;
 
     setDidStartForm(true);
-    if (window.gtag) {
-      window.gtag('event', 'start_form', { form_name: 'precalificacion' });
-    }
+    trackFunnelEvent(FUNNEL_EVENTS.START, {
+      start_source: 'contact_form',
+      form_name: 'precalificacion'
+    });
   };
 
   const whatsappPrefill = encodeURIComponent(
@@ -62,12 +72,15 @@ export default function ContactForm({ leadForm, onLeadFormChange, diagnosticOffe
             <h3 className="mb-1 text-xl font-bold text-blue-900">Comienza en 1 minuto</h3>
             <p className="mb-8 text-sm text-slate-500">Completas estos datos una sola vez y enviamos el contexto para acelerar tu asesoría.</p>
 
-            <div className="mb-8 grid gap-5 sm:grid-cols-2">
+            <p id="contact-form-help" className="mb-6 text-xs text-slate-500">Todos los campos desplegables son obligatorios. Ciudad es opcional.</p>
+
+            <div className="mb-8 grid gap-5 sm:grid-cols-2" aria-describedby="contact-form-help">
               <div className="block text-sm font-semibold text-slate-700">
                 <label htmlFor="lead-perfil">Perfil</label>
                 <select
                   id="lead-perfil"
                   className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500"
+                  required
                   value={leadForm.perfil}
                   onFocus={handleFormStart}
                   onChange={(e) => onLeadFormChange({ perfil: e.target.value })}
@@ -81,6 +94,7 @@ export default function ContactForm({ leadForm, onLeadFormChange, diagnosticOffe
                 <select
                   id="lead-necesidad"
                   className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500"
+                  required
                   value={leadForm.necesidad}
                   onFocus={handleFormStart}
                   onChange={(e) => onLeadFormChange({ necesidad: e.target.value })}
@@ -96,6 +110,7 @@ export default function ContactForm({ leadForm, onLeadFormChange, diagnosticOffe
                 <select
                   id="lead-urgencia"
                   className="mt-2 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500"
+                  required
                   value={leadForm.urgencia}
                   onFocus={handleFormStart}
                   onChange={(e) => onLeadFormChange({ urgencia: e.target.value })}

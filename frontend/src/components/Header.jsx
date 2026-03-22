@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FUNNEL_EVENTS, trackFunnelEvent } from '../utils/analytics';
 
 export default function Header({ whatsappLink }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -37,6 +38,10 @@ export default function Header({ whatsappLink }) {
             href={whatsappLink}
             target="_blank"
             rel="noreferrer"
+            onClick={() => {
+              trackFunnelEvent(FUNNEL_EVENTS.WHATSAPP_CLICK, { channel: 'whatsapp', source: 'header_cta' });
+              trackFunnelEvent(FUNNEL_EVENTS.SUBMIT_INTENT, { channel: 'whatsapp', source: 'header_cta' });
+            }}
             className="rounded-lg bg-blue-900 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 sm:text-sm"
           >
             Agendar asesoría
