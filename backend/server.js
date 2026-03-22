@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-const APP_VERSION = process.env.APP_VERSION || '2026-03-21-hero-sync-v2';
+const APP_VERSION = process.env.APP_VERSION || '2026-03-22-chatbot-funnel-v2';
 
 app.use(cors());
 app.use(express.json());
