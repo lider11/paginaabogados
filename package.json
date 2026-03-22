@@ -9,7 +9,9 @@
     "build": "npm --prefix frontend run build && node scripts/sync-frontend-to-public.js",
     "install:all": "npm --prefix backend install && npm --prefix frontend install",
     "verify:deploy": "bash scripts/post-deploy-verify.sh",
-    "deploy:production": "bash scripts/deploy-production.sh"
+    "deploy:production": "bash scripts/deploy-production.sh",
+    "perf:budget": "node scripts/check-performance-budget.js",
+    "perf:budget:help": "node scripts/check-performance-budget.js --help"
   },
   "dependencies": {
     "cors": "^2.8.5",

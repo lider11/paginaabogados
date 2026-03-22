@@ -179,3 +179,21 @@ Iniciar una **semana 0** de alineación (producto, legal, marketing, tecnología
 1. KPI norte del funnel.
 2. Taxonomía de eventos.
 3. Roadmap técnico de Fase 1.
+
+---
+
+## 7) Estado de implementación (avance)
+
+### Fase 1 · Tarea 2 (Performance budget por plantilla) ✅
+Se implementó configuración operativa en el repositorio:
+
+- Archivo `performance-budgets.json` con presupuestos por plantilla (`home`, `ruta`, `default`):
+  - `lcp_ms`: 2500
+  - `inp_ms`: 200
+  - `cls`: 0.1
+- Script `scripts/check-performance-budget.js` para evaluar reportes Lighthouse JSON y fallar CI si excede budget.
+- Scripts npm:
+  - `npm run perf:budget`
+  - `npm run perf:budget:help`
+
+> Requisito de ejecución: disponer de reportes Lighthouse JSON en `.reports/lighthouse/`.
