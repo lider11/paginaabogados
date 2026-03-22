@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const steps = [
   {
@@ -29,8 +29,23 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState({});
 
+  const launcherRef = useRef(null);
+  const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
+
   const step = steps[stepIndex];
   const isCompleted = stepIndex >= steps.length;
+
+  useEffect(() => {
+    if (!isOpen) {
+      launcherRef.current?.focus();
+      return;
+    }
+
+    setTimeout(() => {
+      closeButtonRef.current?.focus();
+    }, 0);
+  }, [isOpen]);
 
   const whatsappMessage = useMemo(() => {
     if (!isCompleted) return '';
@@ -58,16 +73,56 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
     setStepIndex(0);
   };
 
+  const handleDialogKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setIsOpen(false);
+      return;
+    }
+
+    if (event.key !== 'Tab') return;
+
+    const focusable = dialogRef.current?.querySelectorAll(
+      'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+
+    if (!focusable || focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+      return;
+    }
+
+    if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+
   return (
     <>
       {isOpen && (
-        <section id="wa-chatbot" className="wa-chatbot" aria-live="polite" aria-label="Chat de orientación legal">
+        <section
+          id="wa-chatbot"
+          ref={dialogRef}
+          className="wa-chatbot"
+          role="dialog"
+          aria-modal="false"
+          aria-live="polite"
+          aria-label="Chat de orientación legal"
+          onKeyDown={handleDialogKeyDown}
+        >
           <header className="wa-chatbot__header">
             <div>
               <p className="wa-chatbot__title">Asistente de orientación</p>
               <p className="wa-chatbot__subtitle">Responde 3 preguntas y te llevamos a WhatsApp</p>
             </div>
             <button
+              ref={closeButtonRef}
               type="button"
               onClick={() => setIsOpen(false)}
               className="wa-chatbot__close"
@@ -116,6 +171,7 @@ export default function WhatsAppFunnelChatbot({ whatsappLink }) {
       )}
 
       <button
+        ref={launcherRef}
         type="button"
         className="wa-chatbot__launcher"
         onClick={() => setIsOpen((prev) => !prev)}

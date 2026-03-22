@@ -11,7 +11,8 @@
     "verify:deploy": "bash scripts/post-deploy-verify.sh",
     "deploy:production": "bash scripts/deploy-production.sh",
     "perf:budget": "node scripts/check-performance-budget.js",
-    "perf:budget:help": "node scripts/check-performance-budget.js --help"
+    "perf:budget:help": "node scripts/check-performance-budget.js --help",
+    "a11y:audit": "node scripts/a11y-route-audit.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

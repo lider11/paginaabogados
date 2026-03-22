@@ -250,3 +250,10 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+.wa-chatbot button:focus-visible,
+.wa-chatbot a:focus-visible,
+.wa-chatbot__launcher:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 2px;
+}

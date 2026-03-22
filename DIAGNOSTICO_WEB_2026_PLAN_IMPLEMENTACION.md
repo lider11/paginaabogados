@@ -200,4 +200,4 @@ Se implementó configuración operativa en el repositorio:
 
 
 ### Fase 1 · Paso 3 (Auditoría A11y inicial y correcciones críticas) ✅
-Se ejecutó una auditoría inicial y se dejó evidencia en `ACCESSIBILITY_AUDITORIA_FASE1.md`, incluyendo correcciones críticas en componentes clave (toast, rutas, formulario y reducción de movimiento).
+Se ejecutó una auditoría inicial y se dejó evidencia en `ACCESSIBILITY_AUDITORIA_FASE1.md`, incluyendo correcciones críticas en componentes clave (toast, rutas, formulario, reducción de movimiento y foco dinámico de chatbot). Además, se automatizó una primera verificación con `npm run a11y:audit` (contraste AA, tab order en rutas y foco dinámico del chatbot).
