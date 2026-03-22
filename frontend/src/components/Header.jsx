@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FUNNEL_EVENTS, trackFunnelEvent } from '../utils/analytics';
 
 export default function Header({ whatsappLink }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -16,20 +17,20 @@ export default function Header({ whatsappLink }) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
+    <header className="site-header">
+      <nav className="site-header__nav mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
         <Link
           to="/"
-          className="text-lg font-bold tracking-tight text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2"
+          className="site-header__brand"
         >
           Lexiuridicus
         </Link>
 
-        <div className="hidden gap-5 text-sm font-medium text-slate-600 md:flex">
-          <a href="/#servicios" className="transition-colors hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">Servicios</a>
-          <a href="/#metodologia" className="transition-colors hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">Metodología</a>
-          <a href="/#rutas" className="transition-colors hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">Rutas</a>
-          <a href="/#contacto" className="transition-colors hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">Contacto</a>
+        <div className="hidden gap-5 text-sm font-medium md:flex">
+          <a href="/#servicios" className="site-header__link">Servicios</a>
+          <a href="/#metodologia" className="site-header__link">Metodología</a>
+          <a href="/#rutas" className="site-header__link">Rutas</a>
+          <a href="/#contacto" className="site-header__link">Contacto</a>
         </div>
 
         <div className="flex items-center gap-2">
@@ -37,7 +38,11 @@ export default function Header({ whatsappLink }) {
             href={whatsappLink}
             target="_blank"
             rel="noreferrer"
-            className="rounded-lg bg-blue-900 px-4 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-800 hover:shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 sm:text-sm"
+            onClick={() => {
+              trackFunnelEvent(FUNNEL_EVENTS.WHATSAPP_CLICK, { channel: 'whatsapp', source: 'header_cta' });
+              trackFunnelEvent(FUNNEL_EVENTS.SUBMIT_INTENT, { channel: 'whatsapp', source: 'header_cta' });
+            }}
+            className="site-header__cta"
           >
             Agendar asesoría
           </a>
@@ -47,7 +52,7 @@ export default function Header({ whatsappLink }) {
             aria-expanded={isMobileMenuOpen}
             aria-label={isMobileMenuOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'}
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-            className="inline-flex rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2 md:hidden"
+            className="site-header__menu-btn md:hidden"
           >
             Menú
           </button>
@@ -57,13 +62,13 @@ export default function Header({ whatsappLink }) {
       {isMobileMenuOpen && (
         <div
           id="mobile-nav"
-          className="border-t border-slate-200 bg-white px-5 py-4 md:hidden"
+          className="site-header__mobile md:hidden"
         >
-          <div className="flex flex-col gap-3 text-sm font-medium text-slate-700">
-            <a href="/#servicios" onClick={() => setIsMobileMenuOpen(false)} className="rounded-md px-1 py-1.5 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">Servicios</a>
-            <a href="/#metodologia" onClick={() => setIsMobileMenuOpen(false)} className="rounded-md px-1 py-1.5 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">Metodología</a>
-            <a href="/#rutas" onClick={() => setIsMobileMenuOpen(false)} className="rounded-md px-1 py-1.5 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">Rutas</a>
-            <a href="/#contacto" onClick={() => setIsMobileMenuOpen(false)} className="rounded-md px-1 py-1.5 transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-700 focus-visible:ring-offset-2">Contacto</a>
+          <div className="flex flex-col gap-3 text-sm font-medium">
+            <a href="/#servicios" onClick={() => setIsMobileMenuOpen(false)} className="site-header__mobile-link">Servicios</a>
+            <a href="/#metodologia" onClick={() => setIsMobileMenuOpen(false)} className="site-header__mobile-link">Metodología</a>
+            <a href="/#rutas" onClick={() => setIsMobileMenuOpen(false)} className="site-header__mobile-link">Rutas</a>
+            <a href="/#contacto" onClick={() => setIsMobileMenuOpen(false)} className="site-header__mobile-link">Contacto</a>
           </div>
         </div>
       )}

@@ -8,25 +8,23 @@ const socialLinks = [
 
 function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-blue-900/30 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 text-slate-100">
-      <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-cyan-400/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-indigo-400/20 blur-3xl" />
+    <footer className="site-footer">
+      <div className="site-footer__glow site-footer__glow--right" />
+      <div className="site-footer__glow site-footer__glow--left" />
 
       <div className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-10 sm:grid-cols-2 lg:grid-cols-3">
         <div>
-          <p className="inline-flex rounded-full border border-blue-300/40 bg-blue-500/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-blue-100">
-            Lexiuridicus
-          </p>
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-slate-300">
+          <p className="site-footer__badge">Lexiuridicus</p>
+          <p className="site-footer__text mt-4 max-w-sm text-sm leading-relaxed">
             Firma legal estratégica para empresas y familias. Diseñamos rutas jurídicas claras para decisiones críticas.
           </p>
         </div>
 
         <div>
-          <h3 className="text-sm font-bold uppercase tracking-widest text-blue-100">Contacto</h3>
-          <ul className="mt-4 space-y-2 text-sm text-slate-300">
+          <h3 className="site-footer__title">Contacto</h3>
+          <ul className="mt-4 space-y-2 text-sm site-footer__text">
             <li>
-              <a className="transition hover:text-white" href="mailto:contacto@lexiuridicus.site">
+              <a className="site-footer__link" href="mailto:contacto@lexiuridicus.site">
                 ✉️ contacto@lexiuridicus.site
               </a>
             </li>
@@ -35,7 +33,7 @@ function Footer() {
         </div>
 
         <div>
-          <h3 className="text-sm font-bold uppercase tracking-widest text-blue-100">Síguenos</h3>
+          <h3 className="site-footer__title">Síguenos</h3>
           <nav aria-label="Redes sociales" className="mt-4 flex flex-wrap gap-2">
             {socialLinks.map((item) => (
               <a
@@ -44,7 +42,7 @@ function Footer() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={item.label}
-                className="rounded-full border border-white/25 bg-white/10 px-3 py-1.5 text-xs font-semibold text-blue-50 transition hover:border-cyan-200/60 hover:bg-cyan-400/20 hover:text-white"
+                className="site-footer__social"
               >
                 {item.name}
               </a>
@@ -53,8 +51,8 @@ function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10">
-        <p className="mx-auto w-full max-w-6xl px-5 py-4 text-xs text-slate-400">
+      <div className="site-footer__bottom">
+        <p className="mx-auto w-full max-w-6xl px-5 py-4 text-xs site-footer__text-muted">
           © {new Date().getFullYear()} Lexiuridicus. Todos los derechos reservados.
         </p>
       </div>
