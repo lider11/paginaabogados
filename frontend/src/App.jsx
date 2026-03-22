@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import Toast from './components/Toast';
 import HomePage from './pages/HomePage';
 import RutaPage from './pages/RutaPage';
+import WhatsAppFunnelChatbot from './components/WhatsAppFunnelChatbot';
 
 const API_URL = '/api/services';
 const whatsappLink = 'https://wa.me/573000000000';
@@ -157,6 +158,7 @@ function App() {
       />
 
       <Footer />
+      <WhatsAppFunnelChatbot whatsappLink={whatsappLink} />
       <Toast message={toastMessage} />
     </div>
   );
