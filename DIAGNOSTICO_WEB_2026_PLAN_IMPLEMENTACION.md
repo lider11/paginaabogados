@@ -197,3 +197,7 @@ Se implementó configuración operativa en el repositorio:
   - `npm run perf:budget:help`
 
 > Requisito de ejecución: disponer de reportes Lighthouse JSON en `.reports/lighthouse/`.
+
+
+### Fase 1 · Paso 3 (Auditoría A11y inicial y correcciones críticas) ✅
+Se ejecutó una auditoría inicial y se dejó evidencia en `ACCESSIBILITY_AUDITORIA_FASE1.md`, incluyendo correcciones críticas en componentes clave (toast, rutas, formulario y reducción de movimiento).
