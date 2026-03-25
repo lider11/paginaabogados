@@ -41,7 +41,7 @@ export default function Hero({ diagnosticOffer }) {
 
   return (
     <section className="mx-auto max-w-6xl px-5 pb-10 pt-10">
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-blue-900 to-indigo-800 p-8 text-white shadow-2xl shadow-blue-900/25 sm:p-14">
+      <div className="hero-panel relative overflow-hidden rounded-3xl p-8 text-white sm:p-14">
         <div className="absolute -right-10 -top-8 h-48 w-48 rounded-full bg-cyan-300/20 blur-3xl" aria-hidden="true"></div>
         <div className="absolute -bottom-12 -left-6 h-56 w-56 rounded-full bg-indigo-300/20 blur-3xl" aria-hidden="true"></div>
 
@@ -51,24 +51,24 @@ export default function Hero({ diagnosticOffer }) {
             Firma legal estratégica
           </span>
 
-          <h1 className="mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-white">
+          <h1 className="hero-panel__title mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
             Protege tu empresa y tu patrimonio<br className="hidden md:block" /> con decisiones jurídicas claras
           </h1>
 
-          <p className="mt-5 text-lg leading-relaxed text-blue-100/95">
+          <p className="hero-panel__lead mt-5 text-lg leading-relaxed">
             Te ayudamos a prevenir riesgos legales, ordenar decisiones críticas y actuar con seguridad
             jurídica sin perder velocidad de negocio.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-2">
             {trustPills.map((pill) => (
-              <span key={pill} className="rounded-full border border-white/25 bg-white/5 px-3 py-1 text-xs font-medium text-blue-50">
+              <span key={pill} className="hero-panel__pill rounded-full border px-3 py-1 text-xs font-medium">
                 {pill}
               </span>
             ))}
           </div>
 
-          <p className="mt-6 inline-flex rounded-full border border-white/20 bg-white/10 px-5 py-2.5 text-sm font-medium text-white shadow-sm backdrop-blur-sm">
+          <p className="hero-panel__offer mt-6 inline-flex rounded-full border px-5 py-2.5 text-sm font-medium shadow-sm backdrop-blur-sm">
             <span className="mr-2" aria-hidden="true">💡</span> {diagnosticOffer}
           </p>
 
@@ -80,10 +80,10 @@ export default function Hero({ diagnosticOffer }) {
             >
               {activeVariant.ctaText}
             </a>
-            <a href="#metodologia" className="rounded-xl border border-white/40 px-6 py-3 text-sm font-semibold text-white transition-all hover:border-white/60 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/50">Ver cómo trabajamos</a>
+            <a href="#metodologia" className="hero-panel__secondary-cta rounded-xl border px-6 py-3 text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-white/50">Ver cómo trabajamos</a>
           </div>
 
-          <p className="mt-3 text-xs text-blue-100/80">
+          <p className="hero-panel__subtext mt-3 text-xs">
             {activeVariant.subText}
           </p>
         </div>
