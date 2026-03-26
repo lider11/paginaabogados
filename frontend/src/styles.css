@@ -314,6 +314,26 @@ body {
   color: rgba(219, 234, 254, 0.82);
 }
 
+/* Emergency fallback: asegura gradiente/contraste del Hero incluso con utilidades incompletas */
+[class*="bg-gradient-to-br"][class*="from-slate-950"][class*="to-indigo-800"] {
+  background: linear-gradient(135deg, #020617 0%, #1e3a8a 52%, #3730a3 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 20px 45px rgba(30, 58, 138, 0.28) !important;
+}
+
+[class*="bg-gradient-to-br"][class*="from-slate-950"][class*="to-indigo-800"] h1 {
+  color: #ffffff !important;
+}
+
+[class*="bg-gradient-to-br"][class*="from-slate-950"][class*="to-indigo-800"] [class*="text-blue-100"] {
+  color: rgba(219, 234, 254, 0.92) !important;
+}
+
+[class*="bg-gradient-to-br"][class*="from-slate-950"][class*="to-indigo-800"] [class*="bg-white/10"],
+[class*="bg-gradient-to-br"][class*="from-slate-950"][class*="to-indigo-800"] [class*="bg-white/5"] {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
 .hero-sticky-cta__text {
   margin: 0;
   font-size: 0.8rem;

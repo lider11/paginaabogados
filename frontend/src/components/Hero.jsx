@@ -274,14 +274,9 @@ export default function Hero({ diagnosticOffer }) {
 
   return (
     <section className="mx-auto max-w-6xl px-5 pb-10 pt-10">
-      <div className="hero-panel relative overflow-hidden rounded-3xl p-8 text-white sm:p-14 bg-slate-950">
-        
-        {/* Overlay oscuro elegante */}
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950/90"></div>
-
-        {/* Círculos de luz sutiles (mejorados) */}
-        <div className="absolute -right-12 -top-10 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" aria-hidden="true"></div>
-        <div className="absolute -bottom-16 -left-8 h-72 w-72 rounded-full bg-indigo-400/10 blur-3xl" aria-hidden="true"></div>
+      <div className="hero-panel relative overflow-hidden rounded-3xl p-8 text-white sm:p-14">
+        <div className="absolute -right-10 -top-8 h-48 w-48 rounded-full bg-cyan-300/20 blur-3xl" aria-hidden="true"></div>
+        <div className="absolute -bottom-12 -left-6 h-56 w-56 rounded-full bg-indigo-300/20 blur-3xl" aria-hidden="true"></div>
 
         <div className="relative z-10 max-w-3xl">
           {/* Badge superior */}
@@ -290,35 +285,27 @@ export default function Hero({ diagnosticOffer }) {
             Firma legal estratégica
           </span>
 
-          {/* Título principal */}
-          <h1 className="mt-6 text-4xl font-extrabold tracking-tighter sm:text-5xl lg:text-6xl leading-tight">
-            Protege tu empresa y tu patrimonio<br className="hidden md:block" /> 
-            con decisiones jurídicas claras
+          <h1 className="hero-panel__title mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+            Protege tu empresa y tu patrimonio<br className="hidden md:block" /> con decisiones jurídicas claras
           </h1>
 
-          {/* Lead */}
-          <p className="mt-6 text-lg leading-relaxed text-slate-300 max-w-2xl">
-            Te ayudamos a prevenir riesgos legales, ordenar decisiones críticas y actuar con seguridad 
+          <p className="hero-panel__lead mt-5 text-lg leading-relaxed">
+            Te ayudamos a prevenir riesgos legales, ordenar decisiones críticas y actuar con seguridad
             jurídica sin perder velocidad de negocio.
           </p>
 
           {/* Trust Pills */}
           <div className="mt-8 flex flex-wrap gap-2">
             {trustPills.map((pill) => (
-              <span 
-                key={pill} 
-                className="rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-sm font-medium text-slate-200 backdrop-blur-sm"
-              >
+              <span key={pill} className="hero-panel__pill rounded-full border px-3 py-1 text-xs font-medium">
                 {pill}
               </span>
             ))}
           </div>
 
-          {/* Oferta */}
-          <div className="mt-8 inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium backdrop-blur-md">
-            <span aria-hidden="true" className="text-lg">💡</span>
-            <span>{diagnosticOffer}</span>
-          </div>
+          <p className="hero-panel__offer mt-6 inline-flex rounded-full border px-5 py-2.5 text-sm font-medium shadow-sm backdrop-blur-sm">
+            <span className="mr-2" aria-hidden="true">💡</span> {diagnosticOffer}
+          </p>
 
           {/* CTA Principal */}
           <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -329,17 +316,10 @@ export default function Hero({ diagnosticOffer }) {
             >
               {activeVariant.ctaText}
             </a>
-            
-            <a 
-              href="#metodologia" 
-              className="rounded-2xl border border-white/30 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-white/10 focus:outline-none focus:ring-4 focus:ring-white/30"
-            >
-              Ver cómo trabajamos
-            </a>
+            <a href="#metodologia" className="hero-panel__secondary-cta rounded-xl border px-6 py-3 text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-white/50">Ver cómo trabajamos</a>
           </div>
 
-          {/* Subtexto */}
-          <p className="mt-4 text-sm text-slate-400">
+          <p className="hero-panel__subtext mt-3 text-xs">
             {activeVariant.subText}
           </p>
         </div>
