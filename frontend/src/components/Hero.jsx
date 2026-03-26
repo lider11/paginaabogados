@@ -1,4 +1,4 @@
-tengo un problema en una pagina que tengo en react con el hero esta es la configuracion evaluala import { useEffect, useMemo, useState } from 'react';
+ import { useEffect, useMemo, useState } from 'react';
 import { FUNNEL_EVENTS, trackFunnelEvent } from '../utils/analytics';
 const trustPills = [
   'Respuesta inicial en menos de 24h',
