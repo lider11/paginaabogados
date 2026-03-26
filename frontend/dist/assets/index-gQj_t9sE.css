@@ -12,3 +12,15 @@
 .hover\:scale-105:hover{transform:scale(1.05)}
 .focus\:ring-white\/50:focus{box-shadow:0 0 0 2px rgba(255,255,255,.5)}
 .shadow-blue-900\/20{box-shadow:0 25px 50px -12px rgba(30,58,138,.2)}
+/* hotfix hero utilities v2 */
+.bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}
+.from-slate-950{--tw-gradient-from:#020617;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(2,6,23,0))}
+.via-blue-900{--tw-gradient-stops:var(--tw-gradient-from),#1e3a8a,var(--tw-gradient-to,rgba(30,58,138,0))}
+.to-indigo-800{--tw-gradient-to:#3730a3}
+.text-blue-100\/95{color:rgba(219,234,254,.95)}
+.text-blue-100\/80{color:rgba(219,234,254,.8)}
+.bg-white\/5{background:rgba(255,255,255,.05)}
+.border-white\/25{border-color:rgba(255,255,255,.25)}
+.bg-cyan-300\/20{background:rgba(103,232,249,.2)}
+.bg-indigo-300\/20{background:rgba(165,180,252,.2)}
+.shadow-blue-900\/25{box-shadow:0 25px 50px -12px rgba(30,58,138,.25)}
