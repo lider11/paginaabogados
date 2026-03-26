@@ -67,7 +67,14 @@ npm run build
 npm start
 ```
 
-Express detectará `frontend/dist` y lo servirá automáticamente.
+Si defines `STATIC_SOURCE=dist`, Express detectará `frontend/dist` y lo servirá automáticamente.
+
+### Fuente estática controlada (evitar desalineación Hero/CSS)
+
+El backend ahora usa por defecto `STATIC_SOURCE=public` para servir una única fuente de frontend estable (`public/index.html` + `public/assets`).
+
+- Modo por defecto (recomendado): `STATIC_SOURCE=public`
+- Modo alterno: `STATIC_SOURCE=dist`
 
 
 ## Rediseño UX
