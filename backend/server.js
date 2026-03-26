@@ -37,15 +37,33 @@ const services = [
   }
 ];
 
-const candidateStaticDirs = [
-  process.env.FRONTEND_DIST,
-  path.join(__dirname, '../frontend/dist'),
-  path.join(__dirname, '../frontend/build'),
-  path.join(__dirname, '../public'),
-  path.join(process.cwd(), 'public'),
-  path.join(process.cwd(), 'frontend/dist'),
-  path.join(process.cwd(), 'frontend/build')
-].filter(Boolean);
+const STATIC_SOURCE = process.env.STATIC_SOURCE || 'public';
+
+function buildCandidateStaticDirs() {
+  if (STATIC_SOURCE === 'dist') {
+    return [
+      process.env.FRONTEND_DIST,
+      path.join(__dirname, '../frontend/dist'),
+      path.join(__dirname, '../frontend/build'),
+      path.join(process.cwd(), 'frontend/dist'),
+      path.join(process.cwd(), 'frontend/build'),
+      path.join(__dirname, '../public'),
+      path.join(process.cwd(), 'public')
+    ].filter(Boolean);
+  }
+
+  return [
+    path.join(__dirname, '../public'),
+    path.join(process.cwd(), 'public'),
+    process.env.FRONTEND_DIST,
+    path.join(__dirname, '../frontend/dist'),
+    path.join(__dirname, '../frontend/build'),
+    path.join(process.cwd(), 'frontend/dist'),
+    path.join(process.cwd(), 'frontend/build')
+  ].filter(Boolean);
+}
+
+const candidateStaticDirs = buildCandidateStaticDirs();
 
 const staticDir = candidateStaticDirs.find((dir) => fs.existsSync(path.join(dir, 'index.html')));
 const hasSpaIndex = Boolean(staticDir && fs.existsSync(path.join(staticDir, 'index.html')));
@@ -61,6 +79,7 @@ app.get('/api/health', (_req, res) => {
 app.get('/api/version', (_req, res) => {
   res.json({
     appVersion: APP_VERSION,
+    staticSource: STATIC_SOURCE,
     staticDir: staticDir || null,
     hasSpaIndex,
     routeMode: hasSpaIndex ? 'spa' : 'legacy_fallback',
