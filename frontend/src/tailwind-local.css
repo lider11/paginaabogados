@@ -49,9 +49,11 @@ html, body, #root { margin: 0; min-height: 100%; }
 .text-blue-100\/95{color:rgba(219,234,254,.95)}.text-blue-100\/90{color:rgba(219,234,254,.9)}.text-blue-100\/80{color:rgba(219,234,254,.8)}
 .border-white\/20{border-color:rgba(255,255,255,.2)}.border-white\/25{border-color:rgba(255,255,255,.25)}.border-white\/40{border-color:rgba(255,255,255,.4)}.hover\:border-white\/60:hover{border-color:rgba(255,255,255,.6)}
 .bg-white\/5{background:rgba(255,255,255,.05)}.bg-white\/10{background:rgba(255,255,255,.1)}.bg-cyan-300\/20{background:rgba(103,232,249,.2)}.bg-indigo-300\/20{background:rgba(165,180,252,.2)}
+.bg-white\/15{background:rgba(255,255,255,.15)}
 .shadow-blue-900\/25{box-shadow:0 25px 50px -12px rgba(30,58,138,.25)}.shadow-blue-900\/20{box-shadow:0 25px 50px -12px rgba(30,58,138,.2)}
 
 /* Gradients */
+.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}
 .bg-gradient-to-b{background-image:linear-gradient(to bottom,var(--tw-gradient-stops))}
 .bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}
 .from-white{--tw-gradient-from:#fff;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(255,255,255,0))}
@@ -60,7 +62,7 @@ html, body, #root { margin: 0; min-height: 100%; }
 .from-slate-900{--tw-gradient-from:#0f172a;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(15,23,42,0))}
 .from-slate-950{--tw-gradient-from:#020617;--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to,rgba(2,6,23,0))}
 .via-blue-900{--tw-gradient-stops:var(--tw-gradient-from),#1e3a8a,var(--tw-gradient-to,rgba(30,58,138,0))}
-.to-white{--tw-gradient-to:#fff}.to-slate-50{--tw-gradient-to:#f8fafc}.to-indigo-800{--tw-gradient-to:#3730a3}.to-indigo-900{--tw-gradient-to:#312e81}
+.to-white{--tw-gradient-to:#fff}.to-slate-50{--tw-gradient-to:#f8fafc}.to-blue-900{--tw-gradient-to:#1e3a8a}.to-indigo-800{--tw-gradient-to:#3730a3}.to-indigo-900{--tw-gradient-to:#312e81}
 
 /* Borders/radius/shadows */
 .border{border:1px solid #e2e8f0}.border-b{border-bottom:1px solid #e2e8f0}.border-t{border-top:1px solid #e2e8f0}.border-y{border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0}
