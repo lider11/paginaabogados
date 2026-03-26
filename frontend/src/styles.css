@@ -275,6 +275,65 @@ body {
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.25);
 }
 
+.hero-panel {
+  background: linear-gradient(135deg, #020617 0%, #1e3a8a 52%, #3730a3 100%);
+  box-shadow: 0 20px 45px rgba(30, 58, 138, 0.28);
+}
+
+.hero-panel__title {
+  color: #ffffff;
+}
+
+.hero-panel__lead {
+  color: rgba(219, 234, 254, 0.95);
+}
+
+.hero-panel__pill {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  color: #eff6ff;
+}
+
+.hero-panel__offer {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.hero-panel__secondary-cta {
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+
+.hero-panel__secondary-cta:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.hero-panel__subtext {
+  color: rgba(219, 234, 254, 0.82);
+}
+
+/* Emergency fallback: asegura gradiente/contraste del Hero incluso con utilidades incompletas */
+[class*="bg-gradient-to-br"][class*="from-slate-950"][class*="to-indigo-800"] {
+  background: linear-gradient(135deg, #020617 0%, #1e3a8a 52%, #3730a3 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 20px 45px rgba(30, 58, 138, 0.28) !important;
+}
+
+[class*="bg-gradient-to-br"][class*="from-slate-950"][class*="to-indigo-800"] h1 {
+  color: #ffffff !important;
+}
+
+[class*="bg-gradient-to-br"][class*="from-slate-950"][class*="to-indigo-800"] [class*="text-blue-100"] {
+  color: rgba(219, 234, 254, 0.92) !important;
+}
+
+[class*="bg-gradient-to-br"][class*="from-slate-950"][class*="to-indigo-800"] [class*="bg-white/10"],
+[class*="bg-gradient-to-br"][class*="from-slate-950"][class*="to-indigo-800"] [class*="bg-white/5"] {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
 .hero-sticky-cta__text {
   margin: 0;
   font-size: 0.8rem;
